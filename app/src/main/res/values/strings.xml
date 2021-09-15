@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SToby</string>
+    <string name="app_name_short">SToby</string>
+    <string name="app_version">1.0</string>
+    <string name="app_image_content_desc">Per company specific image</string>
+    <string name="app_prefs">TLP_Prefs</string>
+
+    <!--    <string name="base_url">http://tlp.breezelogistics.com.au:8081</string>-->
+    <string name="base_url">http://192.168.86.114:8080</string>
+    <!--    <string name="base_url"></string>-->
+    <string name="toby_url">/transport/actions/transportmobility</string>
+    <string name="login_url">/transport/actions/login?</string>
+    <string name="nav_open_text">Open</string>
+    <string name="nav_close_text">Close</string>
+    <string name="action">Action</string>
+    <string name="dateAndTime">Date and Time</string>
+
+    <string name="external_dir">logicons</string>
+    <string name="waiting_msg">Please wait..</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

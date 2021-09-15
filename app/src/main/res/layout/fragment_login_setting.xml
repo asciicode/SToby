@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="1"
+        android:background="@color/colorDark"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lblSettingsBaseUrl"
+            style="@style/loginTextView"
+            android:layout_marginTop="20dp"
+            android:text="Base URL:" />
+
+        <EditText
+            android:id="@+id/txtSettingsBaseUrl"
+            style="@style/loginTextView"
+            android:background="@drawable/border"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:gravity="top">
+            <Button
+                android:id="@+id/btnLoginSettingsSave"
+                style="@style/LoginButton"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_marginStart="41dp"
+                android:layout_marginEnd="5dp"
+                android:text="Save"
+                android:textColor="#FFF" />
+            <Button
+                android:id="@+id/btnLoginSettingsCancel"
+                style="@style/LoginButton"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="42dp"
+                android:background="@drawable/roundshape_login_btn_pressed"
+                android:text="Cancel"
+                android:textColor="#000" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

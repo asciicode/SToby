@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:background="@drawable/round_shape_bg"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right">
+
+        <ImageButton
+            android:id="@+id/btnLoginSetting"
+            style="@style/loginSettingButton"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="40dp"
+            app:srcCompat="@drawable/ic_baseline_gear_24" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lblLoginTitle"
+        style="@style/loginTextView"
+        android:layout_marginTop="50dp"
+        android:text="Login"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:layout_gravity="left"/>
+
+    <TextView
+        android:id="@+id/lblLoginUsername"
+        style="@style/loginTextView"
+        android:layout_marginTop="100dp"
+        android:text="Username" />
+
+    <EditText
+        android:id="@+id/txtLoginUsername"
+        style="@style/loginTextView"
+        android:layout_marginTop="130dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/border"
+        android:singleLine="true"
+        android:text="admin"/>
+
+    <TextView
+        android:id="@+id/lblLoginPassword"
+        style="@style/loginTextView"
+        android:layout_marginTop="180dp"
+        android:text="Password" />
+
+    <EditText
+        android:id="@+id/txtLoginPassword"
+        style="@style/loginTextView"
+        android:layout_marginTop="210dp"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/border"
+        android:text="password"/>
+
+    <Button
+        android:id="@+id/btnLoginMain"
+        style="@style/LoginButton"
+        android:layout_marginTop="270dp"
+        android:text="Login"
+        android:textColor="#FFF" />
+
+</FrameLayout>

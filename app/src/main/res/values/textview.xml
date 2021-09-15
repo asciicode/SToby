@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="parentTextView" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="loginTextView" parent="parentTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginStart">41dp</item>
+        <item name="android:layout_marginEnd">42dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="loginTextView1" parent="parentTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginStart">41dp</item>
+        <item name="android:layout_marginEnd">42dp</item>
+        <item name="android:textColor">@color/colorDark</item>
+
+    </style>
+    <style name="dashboardItemTextView" parent="parentTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/font_verdana_bold</item>
+    </style>
+
+    <style name="recyclerItemLabelTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:fontFamily">@font/font_verdana</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:width">125dp</item>
+    </style>
+
+    <style name="recyclerItemValueTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/font_verdana_bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="workflowTitleText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity" >center</item>
+        <item name="android:fontFamily">@font/font_verdana_bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="workflowRowText" >
+        <item name="android:layout_width" >0dp</item>
+        <item name="android:layout_height" >match_parent</item>
+        <item name="android:ellipsize" >end</item>
+        <item name="android:padding" >3dp</item>
+        <item name="android:maxLines" >3</item>
+        <item name="android:height" >70dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/font_verdana_bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:width">130dp</item>
+    </style>
+</resources>

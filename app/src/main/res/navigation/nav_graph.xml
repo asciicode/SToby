@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_manifestListFragment"
+            app:destination="@id/manifestListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadMenuFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadMenuFragment"
+        android:label="LoadMenuFragment" >
+
+        <argument android:name="manifestId" android:defaultValue=""/>
+        <action
+            android:id="@+id/action_loadMenuFragment_to_loadListFragment"
+            app:destination="@id/loadListFragment" />
+        <action
+            android:id="@+id/action_loadMenuFragment_to_loadScanFragment"
+            app:destination="@id/loadScanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadListFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadListFragment"
+        android:label="fragment_load_list"
+        tools:layout="@layout/fragment_load_list" />
+    <fragment
+        android:id="@+id/loadScanFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadScanFragment"
+        android:label="fragment_load_scan"
+        tools:layout="@layout/fragment_load_scan" />
+    <fragment
+        android:id="@+id/makeMenuFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeMenuFragment"
+        android:label="MakeMenuFragment" >
+        <action
+            android:id="@+id/action_makeMenuFragment_to_makeListFragment"
+            app:destination="@id/makeListFragment" />
+        <action
+            android:id="@+id/action_makeMenuFragment_to_makeScanFragment"
+            app:destination="@id/makeScanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makeListFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeListFragment"
+        android:label="fragment_make_list"
+        tools:layout="@layout/fragment_make_list" />
+    <fragment
+        android:id="@+id/makeScanFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeScanFragment"
+        android:label="fragment_make_scan"
+        tools:layout="@layout/fragment_make_scan" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/manifestListFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.ManifestListFragment"
+        android:label="fragment_manifest_list"
+        tools:layout="@layout/fragment_manifest_list" >
+
+        <action
+            android:id="@+id/action_manifestListFragment_to_makeMenuFragment"
+            app:destination="@id/makeMenuFragment" />
+        <action
+            android:id="@+id/action_manifestListFragment_to_loadMenuFragment"
+            app:destination="@id/loadMenuFragment" />
+    </fragment>
+</navigation>
