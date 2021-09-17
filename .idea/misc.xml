@@ -13,6 +13,8 @@
         <entry key="app/src/main/res/layout/activity_login_setting.xml" value="0.12447916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2188679245283019" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.3045977011494253" />
+        <entry key="app/src/main/res/layout/dialog_bg.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/drawer_main.xml" value="0.12239583333333333" />
         <entry key="app/src/main/res/layout/dummy.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_allocated_dashboard.xml" value="0.25" />
@@ -32,6 +34,7 @@
         <entry key="app/src/main/res/layout/recycler_inwards.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/recycler_main.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/recycler_manifest__item_list.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/recycler_manifest_item_list.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/recycler_manifest_list.xml" value="0.33" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.12239583333333333" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.1421875" />
