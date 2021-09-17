@@ -36,7 +36,10 @@
         android:id="@+id/loadScanFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadScanFragment"
         android:label="fragment_load_scan"
-        tools:layout="@layout/fragment_load_scan" />
+        tools:layout="@layout/fragment_load_scan" >
+
+        <argument android:name="manifestId" android:defaultValue=""/>
+    </fragment>
     <fragment
         android:id="@+id/makeMenuFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeMenuFragment"

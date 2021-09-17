@@ -12,18 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import nz.co.logicons.tlp.mobile.stobyapp.R;
-import nz.co.logicons.tlp.mobile.stobyapp.ui.holder.ManifestListRecyclerViewHolder;
-import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.ManifestListOnItemListener;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.holder.ManifestItemListRecyclerViewHolder;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.model.ManifestItemListRecyclerModel;
 
 /*
  * @author by Allen
  */
-public class ManifestItemListRecyclerViewAdapter extends RecyclerView.Adapter<ManifestListRecyclerViewHolder> {
+public class ManifestItemListRecyclerViewAdapter extends RecyclerView.Adapter<ManifestItemListRecyclerViewHolder> {
     private List<ManifestItemListRecyclerModel> list;
     private ImageView imageIndicator;
-//    private ManifestItemListListener manifestItemListListener;
-    private ManifestListOnItemListener onItemClickListener;
+    //    private ManifestItemListListener manifestItemListListener;
 
     public ManifestItemListRecyclerViewAdapter(List<ManifestItemListRecyclerModel> list) {
         this.list = list;
@@ -32,35 +30,33 @@ public class ManifestItemListRecyclerViewAdapter extends RecyclerView.Adapter<Ma
 
     @NonNull
     @Override
-    public ManifestListRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ManifestItemListRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View viewItem = layoutInflater.inflate(R.layout.recycler_manifest_item_list, parent, false);
-        return new ManifestListRecyclerViewHolder(viewItem);
+        return new ManifestItemListRecyclerViewHolder(viewItem);
     }
-    private void updateImageView(ViewGroup parent, ImageView imageView, int id ){
+
+    @Override
+    public void onBindViewHolder(@NonNull ManifestItemListRecyclerViewHolder holder, int position) {
+        ManifestItemListRecyclerModel manifestItemListRecyclerModel = list.get(position);
+        holder.tvJobId.setText(manifestItemListRecyclerModel.getJobId());
+        holder.tvProductId.setText(manifestItemListRecyclerModel.getProductId());
+        holder.tvCustomerId.setText(manifestItemListRecyclerModel.getCustomerId());
+//        holder.tvLoaded.setText("" + manifestItemListRecyclerModel.isLoaded());
+        holder.cbLoaded.setChecked(manifestItemListRecyclerModel.isLoaded());
+    }
+
+    private void updateImageView(ViewGroup parent, ImageView imageView, int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageView.setImageDrawable( parent.getContext().getResources().getDrawable(id, parent.getContext().getApplicationContext().getTheme()));
+            imageView.setImageDrawable(parent.getContext().getResources().getDrawable(id, parent.getContext().getApplicationContext().getTheme()));
         } else {
-            imageView.setImageDrawable( parent.getContext().getResources().getDrawable(id));
+            imageView.setImageDrawable(parent.getContext().getResources().getDrawable(id));
         }
     }
-    @Override
-    public void onBindViewHolder(@NonNull ManifestListRecyclerViewHolder holder, int position) {
-        ManifestItemListRecyclerModel manifestItemListRecyclerModel = list.get(position);
-//        View.OnClickListener clickListener = getClickListener(manifestItemListRecyclerModel);
-//        holder.imageView.setOnClickListener(clickListener);
-
-    }
-//    private View.OnClickListener getClickListener(ManifestItemListRecyclerModel model) {
-//        return view -> manifestItemListListener.onClick(model);
-//    }
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
     }
 
 
-    public void setOnItemClickListener(ManifestListOnItemListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
-    }
 }

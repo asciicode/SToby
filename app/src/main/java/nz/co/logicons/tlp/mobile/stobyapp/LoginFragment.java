@@ -47,6 +47,8 @@ public class LoginFragment extends Fragment {
     ConnectivityManager connectivityManager;
     @Inject
     SharedPreferences.Editor editor;
+    @Inject
+    SharedPreferences sharedPreferences;
     private EditText usernameEditText, passwordEditText;
     private AccessViewModel accessViewModel;
 
@@ -165,6 +167,7 @@ public class LoginFragment extends Fragment {
         User user = new User(username, password);
         // online as of now
         if (connectivityManager.isNetworkAvailable){
+            accessViewModel.getRetroApiUserClient().reinitRetroApi(sharedPreferences);
             accessViewModel.getRetroApiUserClient().checkUser(connectivityManager.isNetworkAvailable, user);
         }else{
             Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_LONG).show();

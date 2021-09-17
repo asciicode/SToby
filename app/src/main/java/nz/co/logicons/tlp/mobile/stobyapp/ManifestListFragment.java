@@ -91,7 +91,6 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
             Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
         }
 
-
         // should be here after invoking web service
         observeAnyChange();
     }

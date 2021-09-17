@@ -39,7 +39,6 @@ public class RetroApiManifestClient extends AbstractRetroApiClient{
         this.manifestDtoMapper = manifestDtoMapper;
         this.manifestDao = manifestDao;
         this.manifestEntityMapper = manifestEntityMapper;
-        initRetroApi(sharedPreferences);
     }
     private AllocatedManifestRunnable allocatedManifestRunnable;
     public void allocatedManifest(boolean isNetworkAvailable, User user){

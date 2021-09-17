@@ -17,6 +17,13 @@ public class Manifest {
     private String to;
     private boolean storeLoad;
 
+    public Manifest() {
+    }
+
+    public Manifest(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

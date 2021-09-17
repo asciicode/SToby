@@ -12,8 +12,7 @@ import nz.co.logicons.tlp.mobile.stobyapp.domain.util.DomainMapper;
 public class ManifestDtoMapper implements DomainMapper<ManifestDto, Manifest> {
     @Override
     public Manifest mapToDomainModel(ManifestDto model) {
-        Manifest ret = new Manifest();
-        ret.setId(model.getId());
+        Manifest ret = new Manifest(model.getId());
         return ret;
     }
 

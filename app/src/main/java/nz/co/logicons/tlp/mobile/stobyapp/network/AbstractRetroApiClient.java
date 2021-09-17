@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public abstract class AbstractRetroApiClient {
     protected RetroApiService retroApiService;
-    protected void initRetroApi(SharedPreferences sharedPreferences){
+    public void initRetroApi(SharedPreferences sharedPreferences){
         if (this.retroApiService == null){
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(sharedPreferences.getString(PreferenceKeys.BASE_URL, "").toString())
@@ -29,6 +29,16 @@ public abstract class AbstractRetroApiClient {
             this.retroApiService = retrofit.create(RetroApiService.class);
         }
     }
+
+    public void reinitRetroApi(SharedPreferences sharedPreferences){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(sharedPreferences.getString(PreferenceKeys.BASE_URL, "").toString())
+                .client(getUnsafeOkHttpClient().build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        this.retroApiService = retrofit.create(RetroApiService.class);
+    }
+
     protected static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains

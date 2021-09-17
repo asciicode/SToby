@@ -40,11 +40,11 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/txtview_inwardid_label"
-                        android:text="ID#"
+                        android:text="Job Id"
                         style="@style/recyclerItemLabelTextView"/>
 
                     <TextView
-                        android:id="@+id/tvManifestId"
+                        android:id="@+id/tvJobId"
                         android:text="value1"
                         style="@style/recyclerItemLabelTextView"/>
                 </LinearLayout>
@@ -52,10 +52,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                    android:text="ID#"
+                    android:text="Product"
                     style="@style/recyclerItemLabelTextView"/>
 
                 <TextView
+                    android:id="@+id/tvProductId"
                     android:text="value1"
                     style="@style/recyclerItemLabelTextView"/>
                 </LinearLayout>
@@ -64,15 +65,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="ID#"
+                        android:text="Customer"
                         style="@style/recyclerItemLabelTextView"/>
 
                     <TextView
                         android:text="value1"
+                        android:id="@+id/tvCustomerId"
                         style="@style/recyclerItemLabelTextView"/>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Loaded"
+                        style="@style/recyclerItemLabelTextView"/>
 
+                    <!--<TextView
+                        android:text="tvLoaded"
+                        android:id="@+id/tvLoaded"
+                        style="@style/recyclerItemLabelTextView"/>-->
+
+                    <CheckBox
+                        android:id="@+id/cbLoaded"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                    />
+                </LinearLayout>
             </LinearLayout>
 
 

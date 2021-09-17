@@ -14,7 +14,7 @@ import nz.co.logicons.tlp.mobile.stobyapp.ui.model.ManifestListRecyclerModel;
 
 
 public class ManifestListRecyclerViewHolder extends RecyclerView.ViewHolder{
-    public TextView txtViewId;
+    public TextView tvManifestId;
     private TextView txtViewInwardsDocket;
     private TextView txtViewInwardCustomer;
     private TextView txtViewInwardWarehouse;
@@ -26,7 +26,7 @@ public class ManifestListRecyclerViewHolder extends RecyclerView.ViewHolder{
 
     public ManifestListRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.txtViewId = itemView.findViewById(R.id.tvManifestId);
+        this.tvManifestId = itemView.findViewById(R.id.tvManifestId);
 //        this.txtViewInwardsDocket = itemView.findViewById(R.id.txtview_inwarddocket_value);
 //        this.txtViewInwardCustomer = itemView.findViewById(R.id.txtview_inwardcustomer_value);
 //        this.txtViewInwardWarehouse = itemView.findViewById(R.id.txtview_inwardwarehouse_value);
@@ -37,37 +37,6 @@ public class ManifestListRecyclerViewHolder extends RecyclerView.ViewHolder{
         this.imageView = itemView.findViewById(R.id.imageIndicator);
     }
 
-    public TextView getTxtViewId() {
-        return txtViewId;
-    }
-
-    public TextView getTxtViewInwardsDocket() {
-        return txtViewInwardsDocket;
-    }
-
-    public TextView getTxtViewInwardCustomer() {
-        return txtViewInwardCustomer;
-    }
-
-    public TextView getTxtViewInwardWarehouse() {
-        return txtViewInwardWarehouse;
-    }
-
-    public LinearLayout getLayoutRecyclerInwards() {
-        return layoutRecyclerInwards;
-    }
-
-    public TextView getTxtViewInwardProduct() {
-        return txtViewInwardProduct;
-    }
-
-    public TextView getTxtViewInwardLocation() {
-        return txtViewInwardLocation;
-    }
-
-    public TextView getTxtViewInwardQuantity() {
-        return txtViewInwardQuantity;
-    }
 
     public void bind(ManifestListRecyclerModel model, ManifestListOnItemListener manifestListOnItemListener){
         itemView.setOnClickListener(view ->  {

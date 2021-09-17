@@ -1,5 +1,6 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,17 +22,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.adapter.DashboardRecyclerViewAdapter;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.DashboardButtonListener;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.model.DashboardRecyclerModel;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.ManifestItemViewModel;
+import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
+import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
 
+@AndroidEntryPoint
 public class LoadMenuFragment extends Fragment implements DashboardButtonListener {
+    @Inject
+    ConnectivityManager connectivityManager;
+    @Inject
+    SharedPreferences sharedPreferences;
     private List<DashboardRecyclerModel> list;
     private DashboardRecyclerViewAdapter adapter;
     private String manifestId;
     public static final String LIST_ITEMS = "List";
     public static final String SCAN_ITEMS = "Scan";
+    private ManifestItemViewModel manifestItemViewModel;
+
     public LoadMenuFragment() {
         // Required empty public constructor
     }
@@ -55,24 +73,14 @@ public class LoadMenuFragment extends Fragment implements DashboardButtonListene
         initializeRecycler(view);
         TextView tvTitle = view.findViewById(R.id.tvTitle);
         tvTitle.setText(String.format("Load Items of Manifest %s ", manifestId));
-//        NavController navController = Navigation.findNavController(view);
-//        Button btnLoad = view.findViewById(R.id.btnLoad);
-//        btnLoad.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(Constants.TAG, "onClick: Btn Load ");
-//                navController.navigate(R.id.action_loadMenuFragment_to_loadListFragment);
-//            }
-//        });
-//
-//        Button btnScan = view.findViewById(R.id.btnScan);
-//        btnScan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(Constants.TAG, "onClick: Btn Scan ");
-//                navController.navigate(R.id.action_loadMenuFragment_to_loadScanFragment);
-//            }
-//        });
+
+        manifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
+                .get(ManifestItemViewModel.class);
+        String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
+        String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
+        User user = new User(username, password);
+        manifestItemViewModel.getRetroApiManifestItemClient()
+                .saveToCacheAllocatedManifestItems(user, new Manifest(manifestId));
     }
 
     private void initializeRecycler(View view) {

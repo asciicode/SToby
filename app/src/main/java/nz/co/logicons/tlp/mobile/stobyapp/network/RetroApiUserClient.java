@@ -47,11 +47,9 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
         this.userDtoMapper = userDtoMapper;
 //        Log.d("RetroApiUserClient ", "RetroApiUserClient: sharedPreferences "
 //                +sharedPreferences.getString(PreferenceKeys.BASE_URL, null).toString());
-        initRetroApi(sharedPreferences);
         this.userDao = userDao;
         this.userEntityMapper = userEntityMapper;
     }
-
 
     private User getUserFromCache(User user){
         Log.d(Constants.TAG, "getUserFromCache: "+user);
@@ -62,7 +60,6 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
 
     private LoginUserRunnable loginUserRunnable;
     public void checkUser(boolean isNetworkAvailable, User user){
-        initRetroApi(sharedPreferences);
         Log.d(Constants.TAG, "execute: "+
                 user + " sharedPreferences "+
                 sharedPreferences.getString(PreferenceKeys.BASE_URL, null).toString());

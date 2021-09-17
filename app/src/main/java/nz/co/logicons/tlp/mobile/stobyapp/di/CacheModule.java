@@ -9,9 +9,11 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.ManifestDao;
+import nz.co.logicons.tlp.mobile.stobyapp.cache.ManifestItemDao;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.UserDao;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.database.AppDatabase;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestEntityMapper;
+import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestItemEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.UserEntityMapper;
 
 @Module
@@ -47,5 +49,17 @@ public class CacheModule {
     @Provides
     ManifestEntityMapper provideCacheManifestMapper(){
         return new ManifestEntityMapper();
+    }
+
+    @Singleton
+    @Provides
+    ManifestItemDao provideManifestItemDao(AppDatabase db){
+        return db.manifestItemDao();
+    }
+
+    @Singleton
+    @Provides
+    ManifestItemEntityMapper provideCacheManifestItemMapper(){
+        return new ManifestItemEntityMapper();
     }
 }
