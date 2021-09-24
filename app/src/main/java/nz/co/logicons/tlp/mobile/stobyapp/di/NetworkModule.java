@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
+import nz.co.logicons.tlp.mobile.stobyapp.network.model.MakeManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.UserDtoMapper;
@@ -42,5 +43,11 @@ public class NetworkModule {
     @Provides
     ManifestItemDtoMapper provideManifestItemDtoMapper() {
         return new ManifestItemDtoMapper();
+    }
+
+    @Singleton
+    @Provides
+    MakeManifestItemDtoMapper provideMakeManifestItemDtoMapper() {
+        return new MakeManifestItemDtoMapper();
     }
 }

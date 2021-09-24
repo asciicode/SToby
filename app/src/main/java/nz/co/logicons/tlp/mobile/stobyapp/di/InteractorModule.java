@@ -14,9 +14,11 @@ import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestItemEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.UserEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.ManifestServiceClient;
+import nz.co.logicons.tlp.mobile.stobyapp.network.RetroApiMakeManifestItemClient;
 import nz.co.logicons.tlp.mobile.stobyapp.network.RetroApiManifestClient;
 import nz.co.logicons.tlp.mobile.stobyapp.network.RetroApiManifestItemClient;
 import nz.co.logicons.tlp.mobile.stobyapp.network.RetroApiUserClient;
+import nz.co.logicons.tlp.mobile.stobyapp.network.model.MakeManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.UserDtoMapper;
@@ -56,5 +58,15 @@ public class InteractorModule {
             ManifestItemEntityMapper manifestItemEntityMapper){
         return new RetroApiManifestItemClient(sharedPreferences, manifestItemDtoMapper,
                 manifestItemDao, manifestItemEntityMapper);
+    }
+
+    @ViewModelScoped
+    @Provides
+    RetroApiMakeManifestItemClient provideRetroApiMakeManifestItemClient(SharedPreferences sharedPreferences,
+            ManifestItemDtoMapper manifestItemDtoMapper, ManifestItemDao manifestItemDao,
+            ManifestItemEntityMapper manifestItemEntityMapper,
+            MakeManifestItemDtoMapper makeManifestItemDtoMapper){
+        return new RetroApiMakeManifestItemClient(sharedPreferences, manifestItemDtoMapper,
+                manifestItemDao, manifestItemEntityMapper, makeManifestItemDtoMapper);
     }
 }

@@ -81,17 +81,17 @@
                         android:text="Loaded"
                         style="@style/recyclerItemLabelTextView"/>
 
-                    <!--<TextView
+                    <TextView
                         android:text="tvLoaded"
                         android:id="@+id/tvLoaded"
-                        style="@style/recyclerItemLabelTextView"/>-->
+                        style="@style/recyclerItemLabelTextView"/>
 
-                    <CheckBox
+                    <!--<CheckBox
                         android:id="@+id/cbLoaded"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                    />
+                    />-->
                 </LinearLayout>
             </LinearLayout>
 

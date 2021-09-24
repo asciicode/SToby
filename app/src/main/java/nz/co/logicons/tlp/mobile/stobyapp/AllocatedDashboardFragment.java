@@ -68,10 +68,14 @@ public class AllocatedDashboardFragment extends Fragment implements DashboardBut
     public void onClick(DashboardRecyclerModel model) {
         Log.d(Constants.TAG, "onClick: allocated "+model);
         NavController navController = Navigation.findNavController(this.getView());
+        Bundle bundle = new Bundle();
+
         if (TextUtils.equals(model.getImgText(), "Load")){
-            navController.navigate(R.id.action_mainFragment_to_manifestListFragment);
+            bundle.putBoolean("storeLoad", false);
+            navController.navigate(R.id.action_mainFragment_to_manifestListFragment, bundle);
         } else  if (TextUtils.equals(model.getImgText(), "Make")){
-//            navController.navigate(R.id.action_mainFragment_to_makeMenuFragment);
+            bundle.putBoolean("storeLoad", true);
+            navController.navigate(R.id.action_mainFragment_to_manifestListFragment, bundle);
         } else  if (TextUtils.equals(model.getImgText(), "Inward")){
 //            navController.navigate(R.id.action_mainFragment_to_loadMenuFragment);
         }

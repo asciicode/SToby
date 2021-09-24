@@ -44,8 +44,7 @@ public class LoadMenuFragment extends Fragment implements DashboardButtonListene
     private List<DashboardRecyclerModel> list;
     private DashboardRecyclerViewAdapter adapter;
     private String manifestId;
-    public static final String LIST_ITEMS = "List";
-    public static final String SCAN_ITEMS = "Scan";
+
     private ManifestItemViewModel manifestItemViewModel;
 
     public LoadMenuFragment() {
@@ -86,8 +85,8 @@ public class LoadMenuFragment extends Fragment implements DashboardButtonListene
     private void initializeRecycler(View view) {
         Log.d(Constants.TAG, "initializeRecycler: load menu frag ");
         list = new ArrayList<>();
-        list.add(new DashboardRecyclerModel(R.drawable.ic_transfers_white, LIST_ITEMS, "#ffffff", 1, getActivity()));
-        list.add(new DashboardRecyclerModel(R.drawable.ic_outwards_white, SCAN_ITEMS, "#ffffff",2, getActivity()));
+        list.add(new DashboardRecyclerModel(R.drawable.ic_transfers_white, Constants.LIST_ITEMS, "#ffffff", 1, getActivity()));
+        list.add(new DashboardRecyclerModel(R.drawable.ic_outwards_white, Constants.SCAN_ITEMS, "#ffffff",2, getActivity()));
 //        list.add(new DashboardRecyclerModel(R.drawable.ic_inwards_white, "Inward", "#ffffff",3, getActivity()));
 //        list.add(new DashboardRecyclerModel(R.drawable.ic_stocktake_white, "STOCK TAKE", "#ffffff",4, getActivity()));
 
@@ -106,9 +105,9 @@ public class LoadMenuFragment extends Fragment implements DashboardButtonListene
         NavController navController = Navigation.findNavController(this.getView());
         Bundle bundle = new Bundle();
         bundle.putString("manifestId", manifestId);
-        if (TextUtils.equals(model.getImgText(), LIST_ITEMS)){
+        if (TextUtils.equals(model.getImgText(), Constants.LIST_ITEMS)){
             navController.navigate(R.id.action_loadMenuFragment_to_loadListFragment, bundle);
-        } else  if (TextUtils.equals(model.getImgText(), SCAN_ITEMS)){
+        } else  if (TextUtils.equals(model.getImgText(), Constants.SCAN_ITEMS)){
             navController.navigate(R.id.action_loadMenuFragment_to_loadScanFragment, bundle);
         }
     }

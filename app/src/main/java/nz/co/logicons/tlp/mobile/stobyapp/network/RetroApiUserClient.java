@@ -1,10 +1,13 @@
 package nz.co.logicons.tlp.mobile.stobyapp.network;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import org.json.JSONObject;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -98,7 +101,7 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
                     if (isNetworkAvailable){
                         Response response = getToken(user).execute();
 
-                        if (response.code() == 200){
+                        if (response.isSuccessful()){
                             Log.d(Constants.TAG, "RetroApiUserClient : "+response.body());
                             userData.postValue(new Result.Success(
                                     userDtoMapper.mapToDomainModel((UserDto) response.body())));
@@ -109,9 +112,12 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
                             Log.d(Constants.TAG, "RetroApiUserClient : "+userResp);
                             userDao.insert(userEntityMapper.mapFromDomainModel(userResp));
                         }else if (response.errorBody() != null){
-                            Log.v(Constants.TAG, "Error "+response.errorBody().string());
-                            userData.postValue(new Result.Error(
-                                    new Exception(response.errorBody().string())));
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String errMsg = (String) jObjError.get("message");
+                            Log.v(Constants.TAG, "Error "+errMsg);
+                            Exception exception = TextUtils.isEmpty(errMsg) ? null
+                                    : new Exception(errMsg);
+                            userData.postValue(new Result.Error(exception));
                         }
                     }
 //                }

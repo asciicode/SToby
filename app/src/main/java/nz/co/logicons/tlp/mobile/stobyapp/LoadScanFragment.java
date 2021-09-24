@@ -30,13 +30,13 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
 import com.budiyev.android.codescanner.ScanMode;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.zxing.Result;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.ManifestItemViewModel;
@@ -117,32 +117,35 @@ public class LoadScanFragment extends Fragment {
     }
 
     private void observeAnyChange() {
+        // per scan observer
         manifestItemViewModel.getRetroApiManifestItemClient().getManifestItem().observe(getViewLifecycleOwner(),
                 manifestItemResult -> {
                     Log.d(Constants.TAG, "observeAnyChange:ManifestItem " + manifestItemResult);
-                    if (manifestItemResult instanceof nz.co.logicons.tlp.mobile.stobyapp.data.Result.Error) {
+                    if (manifestItemResult instanceof Result.Error) {
                         toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2, 1000);
-                    } else if (manifestItemResult instanceof nz.co.logicons.tlp.mobile.stobyapp.data.Result.Success) {
+                        Toast.makeText(getActivity(), "Barcode not found in this Manifest.", Toast.LENGTH_SHORT).show();
+                    } else if (manifestItemResult instanceof Result.Success) {
 
                         // check if all loaded
-                        nz.co.logicons.tlp.mobile.stobyapp.data.Result.Success manifestItemRes
-                                = (nz.co.logicons.tlp.mobile.stobyapp.data.Result.Success) manifestItemResult;
+                        Result.Success manifestItemRes = (Result.Success) manifestItemResult;
                         if (manifestItemRes.getData() instanceof String) {
                             // bottom dialog here
                             dialog.show();
                             Log.d(Constants.TAG, "observeAnyChange: all items loaded");
                             toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
                         } else {
+                            Toast.makeText(getActivity(), Constants.ITEM_LOADED, Toast.LENGTH_SHORT).show();
                             toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
                         }
                     }
                 });
 
+        // pop up pag balik sa user diri not necessary?
         manifestItemViewModel.getRetroApiManifestItemClient().getManifestItems().observe(getViewLifecycleOwner(),
                 listResult -> {
                     Log.d(Constants.TAG, "onChanged: LoadScanFragment " + listResult);
-                    if (listResult instanceof nz.co.logicons.tlp.mobile.stobyapp.data.Result.Success) {
-                        List<ManifestItem> results = (List<ManifestItem>) ((nz.co.logicons.tlp.mobile.stobyapp.data.Result.Success<?>) listResult).getData();
+                    if (listResult instanceof Result.Success) {
+                        List<ManifestItem> results = (List<ManifestItem>) ((Result.Success<?>) listResult).getData();
                         ManifestItem notLoadedManifestItem = results.stream().filter(rec -> !rec.isLoaded()).findFirst().orElse(null);
                         if (notLoadedManifestItem == null) {
                             dialog.show();
@@ -170,11 +173,11 @@ public class LoadScanFragment extends Fragment {
         mCodeScanner = new CodeScanner(getActivity(), scannerView);
         mCodeScanner.setFormats(CodeScanner.ALL_FORMATS);
         mCodeScanner.setAutoFocusMode(AutoFocusMode.SAFE);
-        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
+        mCodeScanner.setScanMode(ScanMode.SINGLE);
         mCodeScanner.setFlashEnabled(false);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
-            public void onDecoded(@NonNull final Result result) {
+            public void onDecoded(@NonNull final com.google.zxing.Result result) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

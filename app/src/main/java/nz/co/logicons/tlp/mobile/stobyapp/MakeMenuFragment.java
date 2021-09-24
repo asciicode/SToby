@@ -1,66 +1,50 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.inject.Inject;
+
+import nz.co.logicons.tlp.mobile.stobyapp.ui.adapter.DashboardRecyclerViewAdapter;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.DashboardButtonListener;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.model.DashboardRecyclerModel;
+import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MakeMenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MakeMenuFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class MakeMenuFragment extends Fragment implements DashboardButtonListener {
+    @Inject
+    ConnectivityManager connectivityManager;
+    @Inject
+    SharedPreferences sharedPreferences;
+    private List<DashboardRecyclerModel> list;
+    private DashboardRecyclerViewAdapter adapter;
+    private String manifestId;
 
     public MakeMenuFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MakeMenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MakeMenuFragment newInstance(String param1, String param2) {
-        MakeMenuFragment fragment = new MakeMenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        manifestId = getArguments().getString("manifestId");
     }
 
     @Override
@@ -73,24 +57,37 @@ public class MakeMenuFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initializeRecycler(view);
+        TextView tvTitle = view.findViewById(R.id.tvTitle);
+        tvTitle.setText(String.format("Make Manifest %s ", manifestId));
+    }
 
-        NavController navController = Navigation.findNavController(view);
-        Button btnMake = view.findViewById(R.id.btnMake);
-        btnMake.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(Constants.TAG, "onClick: Btn Make ");
-                navController.navigate(R.id.action_makeMenuFragment_to_makeListFragment);
-            }
-        });
+    private void initializeRecycler(View view) {
+        Log.d(Constants.TAG, "initializeRecycler: make menu frag ");
+        list = new ArrayList<>();
+        list.add(new DashboardRecyclerModel(R.drawable.ic_transfers_white, Constants.LIST_ITEMS, "#ffffff", 1, getActivity()));
+        list.add(new DashboardRecyclerModel(R.drawable.ic_outwards_white, Constants.SCAN_ITEMS, "#ffffff",2, getActivity()));
+//        list.add(new DashboardRecyclerModel(R.drawable.ic_inwards_white, "Inward", "#ffffff",3, getActivity()));
+//        list.add(new DashboardRecyclerModel(R.drawable.ic_stocktake_white, "STOCK TAKE", "#ffffff",4, getActivity()));
 
-        Button btnScan = view.findViewById(R.id.btnScan);
-        btnScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(Constants.TAG, "onClick: Btn Scan ");
-                navController.navigate(R.id.action_makeMenuFragment_to_makeScanFragment);
-            }
-        });
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_allocated_dashboard);
+        adapter = new DashboardRecyclerViewAdapter(list, this);
+        recyclerView.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(DashboardRecyclerModel model) {
+        Log.d(Constants.TAG, "onClick: allocated "+model);
+        NavController navController = Navigation.findNavController(this.getView());
+        Bundle bundle = new Bundle();
+        bundle.putString("manifestId", manifestId);
+        if (TextUtils.equals(model.getImgText(), Constants.LIST_ITEMS)){
+            navController.navigate(R.id.action_makeMenuFragment_to_makeListFragment, bundle);
+        } else  if (TextUtils.equals(model.getImgText(), Constants.SCAN_ITEMS)){
+            navController.navigate(R.id.action_makeMenuFragment_to_makeScanFragment, bundle);
+        }
     }
 }

@@ -44,6 +44,8 @@
         android:id="@+id/makeMenuFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeMenuFragment"
         android:label="MakeMenuFragment" >
+
+        <argument android:name="manifestId" android:defaultValue=""/>
         <action
             android:id="@+id/action_makeMenuFragment_to_makeListFragment"
             app:destination="@id/makeListFragment" />

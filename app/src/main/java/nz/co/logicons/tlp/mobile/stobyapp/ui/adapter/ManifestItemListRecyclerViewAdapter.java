@@ -42,8 +42,8 @@ public class ManifestItemListRecyclerViewAdapter extends RecyclerView.Adapter<Ma
         holder.tvJobId.setText(manifestItemListRecyclerModel.getJobId());
         holder.tvProductId.setText(manifestItemListRecyclerModel.getProductId());
         holder.tvCustomerId.setText(manifestItemListRecyclerModel.getCustomerId());
-//        holder.tvLoaded.setText("" + manifestItemListRecyclerModel.isLoaded());
-        holder.cbLoaded.setChecked(manifestItemListRecyclerModel.isLoaded());
+        holder.tvLoaded.setText("" + manifestItemListRecyclerModel.isLoaded());
+//        holder.cbLoaded.setChecked(manifestItemListRecyclerModel.isLoaded());
     }
 
     private void updateImageView(ViewGroup parent, ImageView imageView, int id) {

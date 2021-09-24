@@ -52,6 +52,7 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
     private RecyclerView recyclerView;
     private List<ManifestListRecyclerModel> list = new ArrayList<>();
     private ManifestViewModel manifestViewModel;
+    private boolean storeLoad;
 
     public ManifestListFragment() {
         // Required empty public constructor
@@ -60,6 +61,8 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        storeLoad = getArguments().getBoolean("storeLoad");
     }
 
     @Override
@@ -86,7 +89,10 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
 
         manifestViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(ManifestViewModel.class);
         if (connectivityManager.isNetworkAvailable){
-            manifestViewModel.getRetroApiManifestClient().allocatedManifest(connectivityManager.isNetworkAvailable, user);
+            Manifest manifest = new Manifest();
+            manifest.setStoreLoad(storeLoad);
+            manifestViewModel.getRetroApiManifestClient().allocatedManifest(
+                    connectivityManager.isNetworkAvailable, manifest, user);
         }else{
             Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
         }
@@ -103,7 +109,9 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
                 Log.d(Constants.TAG, "onChanged: "+listResult);
 
                 if (listResult instanceof Result.Error){
-                    Toast.makeText(getActivity(), Constants.SERVER_ERROR, Toast.LENGTH_SHORT).show();
+                    String str = ((Result.Error) listResult).getError() == null ?
+                            Constants.SERVER_ERROR : ((Result.Error) listResult).getError().getMessage();
+                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                     list.clear();
                     updateControls();
                     adapter.notifyDataSetChanged();
@@ -127,9 +135,8 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
         txtViewFragmentInwardsCount.setText(String.format("%s record(s) found.", this.list.size()));
     }
     private void initControls() {
-        /* Initialize title */
-//        String title = String.format("%s %s", sharedService.isAllocatedSelection() ? "ALLOCATED" : "AVAILABLE", tag);
-        txtViewFragmentInwards.setText("Load Allocated Manifest");
+        txtViewFragmentInwards.setText(String.format("%s Allocated Manifest",
+                storeLoad ? "Make" :"Load"));
     }
 
     private void initializeRecycler(View view) {
@@ -148,7 +155,12 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
         Bundle bundle = new Bundle();
         bundle.putString("manifestId", model.getId());
         NavController navController = Navigation.findNavController(this.getView());
-        navController.navigate(R.id.action_manifestListFragment_to_loadMenuFragment, bundle);
+        if (storeLoad){
+            navController.navigate(R.id.action_manifestListFragment_to_makeMenuFragment, bundle);
+        }else{
+            navController.navigate(R.id.action_manifestListFragment_to_loadMenuFragment, bundle);
+        }
+
     }
 
     @Override

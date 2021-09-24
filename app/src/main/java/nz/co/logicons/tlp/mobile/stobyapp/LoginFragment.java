@@ -123,7 +123,9 @@ public class LoginFragment extends Fragment {
                     NavController navController = Navigation.findNavController(view);
                     navController.navigate(R.id.action_loginFragment_to_mainFragment);
                 }else if (result instanceof Result.Error){
-                    Toast.makeText(getActivity(), Constants.SERVER_ERROR, Toast.LENGTH_SHORT).show();
+                    String str = ((Result.Error) result).getError() == null ?
+                            Constants.SERVER_ERROR : ((Result.Error) result).getError().getMessage();
+                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 }
             }
         });

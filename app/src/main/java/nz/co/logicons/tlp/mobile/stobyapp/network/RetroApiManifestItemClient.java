@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import nz.co.logicons.tlp.mobile.stobyapp.AppExecutors;
@@ -79,7 +81,7 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient{
                 manifestItem.postValue(new Result.Loading(true));
                 List<ManifestItemEntity> manifestItemEntities = manifestItemDao
                     .getManifestItemEntityByManifestId(inputItem.getManifestId());
-                if (manifestItemEntities == null || manifestItemEntities.isEmpty()){
+                if (manifestItemEntities.isEmpty()){
                     manifestItem.postValue(new Result.Error(new Exception("Barcode not found.")));
                 }else{
                     ManifestItemEntity barcodeEntity = manifestItemEntities.stream()
@@ -133,7 +135,7 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient{
         public void run() {
             try {
                 Response response = getAllocatedManifestItems(manifest, user.getUsername(), user.getPassword()).execute();
-                if (response.code() == 200){
+                if (response.isSuccessful()){
                     Log.d(Constants.TAG, "RetroApiClient : "+response.body());
                     List<ManifestItemDto> items = (List<ManifestItemDto>) response.body();
                     List<ManifestItem> domainItems = manifestItemDtoMapper.toDomainList(items);
@@ -142,12 +144,12 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient{
                         manifestItemDao.insert(manifestItemEntity);
                     }
                 }else if (response.errorBody() != null){
-                    Log.v(Constants.TAG, "Error "+response.errorBody().string());
-//                    manifestItems.postValue(new Result.Error(new Exception(response.errorBody().string())));
+                    Log.v(Constants.TAG, "Error "+response.errorBody());
+                    manifestItems.postValue(new Result.Error(new Exception(response.errorBody().string())));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-//                manifestItems.postValue(new Result.Error(e));
+                manifestItems.postValue(new Result.Error(e));
             }
         }
     }
@@ -183,15 +185,19 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient{
                             .getManifestItemEntityByManifestId(manifest.getId());
                     if (manifestItemEntities.isEmpty()){
                         Response response = getAllocatedManifestItems(manifest, user.getUsername(), user.getPassword()).execute();
-                        if (response.code() == 200){
+                        if (response.isSuccessful()){
                             Log.d(Constants.TAG, "RetroApiClient : "+response.body());
                             manifestItems.postValue(new Result.Success(
                                     manifestItemDtoMapper.toDomainList((List<ManifestItemDto>) response.body())));
 
 
                         }else if (response.errorBody() != null){
-                            Log.v(Constants.TAG, "Error "+response.errorBody().string());
-                            manifestItems.postValue(new Result.Error(new Exception(response.errorBody().string())));
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String errMsg = (String) jObjError.get("message");
+                            Log.v(Constants.TAG, "Error "+response.errorBody());
+                            Exception exception = TextUtils.isEmpty(errMsg) ? null
+                                    : new Exception(errMsg);
+                            manifestItems.postValue(new Result.Error(exception));
                         }
                     }else{
                         Log.d(Constants.TAG, "run: getting items in cache ");

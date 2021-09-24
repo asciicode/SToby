@@ -3,25 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="50dp"
+    android:outlineAmbientShadowColor="@android:color/transparent"
+    android:outlineSpotShadowColor="@android:color/transparent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTitle"
+        android:paddingBottom="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Make Menu Fragment"
-        android:textAlignment="center" />
+        android:text="Allocated"
+        style="@style/dashboardItemTextView"/>
 
-    <Button
-        android:id="@+id/btnMake"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Make" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_allocated_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan" />
+    </androidx.recyclerview.widget.RecyclerView>
+
+
 
 </LinearLayout>
