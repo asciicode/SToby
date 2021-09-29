@@ -5,7 +5,6 @@ import java.util.List;
 
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.util.DomainMapper;
-import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestItemDto;
 
 /*
  * @author by Allen
@@ -14,6 +13,7 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
     @Override
     public ManifestItem mapToDomainModel(ManifestItemEntity model) {
         return new ManifestItem(
+                model.getItemMovementId(),
                 model.getManifestId(),
                 model.getMovementId(),
                 model.getJobId(),
@@ -28,6 +28,7 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
     @Override
     public ManifestItemEntity mapFromDomainModel(ManifestItem manifestItem) {
         return new ManifestItemEntity(
+                manifestItem.getItemMovementId(),
                 manifestItem.getManifestId(),
                 manifestItem.getMovementId(),
                 manifestItem.getJobId(),

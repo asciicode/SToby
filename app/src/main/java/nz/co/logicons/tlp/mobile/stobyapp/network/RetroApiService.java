@@ -45,4 +45,9 @@ public interface RetroApiService {
     Call<MakeManifestItemDto> removeMakeManifestItem(@Body MakeManifestItem makeManifestItem,
             @Query("username") String username,
             @Query("password") String password);
+
+    @POST("/transport/actions/stoby/load-complete-make-manifest")
+    Call<MakeManifestItemDto> loadCompleteMakeManifestItem(@Body MakeManifestItem makeManifestItem,
+            @Query("username") String username,
+            @Query("password") String password);
 }

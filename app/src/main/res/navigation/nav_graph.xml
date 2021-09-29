@@ -31,7 +31,10 @@
         android:id="@+id/loadListFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadListFragment"
         android:label="fragment_load_list"
-        tools:layout="@layout/fragment_load_list" />
+        tools:layout="@layout/fragment_load_list" >
+
+        <argument android:name="manifestId" android:defaultValue=""/>
+    </fragment>
     <fragment
         android:id="@+id/loadScanFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.LoadScanFragment"
@@ -39,6 +42,9 @@
         tools:layout="@layout/fragment_load_scan" >
 
         <argument android:name="manifestId" android:defaultValue=""/>
+        <action
+            android:id="@+id/action_loadScanFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/makeMenuFragment"
@@ -57,12 +63,21 @@
         android:id="@+id/makeListFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeListFragment"
         android:label="fragment_make_list"
-        tools:layout="@layout/fragment_make_list" />
+        tools:layout="@layout/fragment_make_list" >
+
+        <argument android:name="manifestId" android:defaultValue=""/>
+    </fragment>
     <fragment
         android:id="@+id/makeScanFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.MakeScanFragment"
         android:label="fragment_make_scan"
-        tools:layout="@layout/fragment_make_scan" />
+        tools:layout="@layout/fragment_make_scan" >
+
+        <argument android:name="action" android:defaultValue=""/>
+        <action
+            android:id="@+id/action_makeScanFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="nz.co.logicons.tlp.mobile.stobyapp.LoginFragment"

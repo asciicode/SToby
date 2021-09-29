@@ -2,12 +2,13 @@ package nz.co.logicons.tlp.mobile.stobyapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,13 +42,22 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(Constants.TAG, "onCreate: Main Frag");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String action = bundle.getString("action");
+            if (!TextUtils.isEmpty(action)) {
+                Toast.makeText(getActivity(), action, Toast.LENGTH_SHORT).show();
+            }
+        }
+       Log.d(Constants.TAG, "onCreate: Main Frag");
     }
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        Log.d(Constants.TAG, "onPrepareOptionsMenu: Main Frag");
+
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        Log.d(Constants.TAG, "onPrepareOptionsMenu: Main Frag");
 //        menu.clear();
-    }
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {

@@ -9,10 +9,12 @@ import androidx.room.PrimaryKey;
  */
 @Entity
 public class ManifestItemEntity {
-
-    private String manifestId;
     @PrimaryKey
     @NonNull
+    private String itemMovementId;
+
+    private String manifestId;
+
     private String movementId;
 
     private String jobId;
@@ -27,9 +29,14 @@ public class ManifestItemEntity {
 
     private boolean loaded;
 
-    public ManifestItemEntity(String manifestId, @NonNull String movementId, String jobId, String itemId, String barCode,
-            String productId, String customerId, boolean loaded)
-    {
+    public String getItemMovementId() {
+        return itemMovementId;
+    }
+
+    public ManifestItemEntity(@NonNull String itemMovementId, String manifestId, String movementId,
+            String jobId, String itemId, String barCode,
+            String productId, String customerId, boolean loaded) {
+        this.itemMovementId = itemMovementId;
         this.manifestId = manifestId;
         this.movementId = movementId;
         this.jobId = jobId;
@@ -73,53 +80,50 @@ public class ManifestItemEntity {
         return loaded;
     }
 
-    public void setManifestId(String manifestId)
-    {
+    public void setManifestId(String manifestId) {
         this.manifestId = manifestId;
     }
 
-    public void setMovementId(String movementId)
-    {
+    public void setMovementId(String movementId) {
         this.movementId = movementId;
     }
 
-    public void setJobId(String jobId)
-    {
+    public void setJobId(String jobId) {
         this.jobId = jobId;
     }
 
-    public void setItemId(String itemId)
-    {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
-    public void setBarCode(String barCode)
-    {
+    public void setBarCode(String barCode) {
         this.barCode = barCode;
     }
 
-    public void setProductId(String productId)
-    {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public void setCustomerId(String customerId)
-    {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public void setLoaded(boolean loaded)
-    {
+    public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
     @Override
-    public String toString()
-    {
-        return "ManifestItemDto [manifestId=" + manifestId + ", movementId=" + movementId + ", jobId=" + jobId + ", itemId="
-                + itemId + ", barCode=" + barCode + ", productId=" + productId + ", customerId=" + customerId + ", loaded="
-                + loaded + "]";
+    public String toString() {
+        return "ManifestItemEntity{" +
+                "itemMovementId='" + itemMovementId + '\'' +
+                ", manifestId='" + manifestId + '\'' +
+                ", movementId='" + movementId + '\'' +
+                ", jobId='" + jobId + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", barCode='" + barCode + '\'' +
+                ", productId='" + productId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", loaded=" + loaded +
+                '}';
     }
-
-
 }

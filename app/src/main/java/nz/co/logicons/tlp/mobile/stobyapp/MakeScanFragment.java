@@ -1,8 +1,8 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
+import static nz.co.logicons.tlp.mobile.stobyapp.util.Constants.LOAD_COMPLETED;
 import static nz.co.logicons.tlp.mobile.stobyapp.util.Constants.NO_INET_CONNECTION;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.budiyev.android.codescanner.AutoFocusMode;
 import com.budiyev.android.codescanner.CodeScanner;
@@ -82,11 +86,11 @@ public class MakeScanFragment extends Fragment {
         });
 
         dialog.findViewById(R.id.btnNo).setOnClickListener(view1 -> {
-            if (connectivityManager.isNetworkAvailable) {
-                dialog.hide();
-            } else {
-                Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
-            }
+            dialog.hide();
+            mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
+        });
+        dialog.setOnCancelListener(dialogInterface -> {
+            mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
         });
     }
 
@@ -106,12 +110,24 @@ public class MakeScanFragment extends Fragment {
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         user = new User(username, password);
 
+        setupButton(view);
+
         makeManifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
                 .get(MakeManifestItemViewModel.class);
 
         observeAnyChange();
     }
-
+    private void setupButton(@NonNull View view) {
+        Button btn = view.findViewById(R.id.btnLoadComplete);
+        btn.setOnClickListener(
+            temp -> {
+                MakeManifestItem makeManifestItem = new MakeManifestItem();
+                makeManifestItem.setManifestId(manifestId);
+                makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
+                        .loadCompleteMakeManifestItem(makeManifestItem, user);
+            }
+        );
+    }
     private void observeAnyChange() {
         makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getMakeManifestItem().observe(
                 getViewLifecycleOwner(), makeManifestItemResult -> {
@@ -134,22 +150,27 @@ public class MakeScanFragment extends Fragment {
                 }else if (TextUtils.equals(makeManifestItem.getAction(), "ItemRemoved")){
                     dialog.hide();
                     Toast.makeText(getActivity(), Constants.ITEM_REMOVED, Toast.LENGTH_SHORT).show();
+                }else if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")){
+                    NavController navController = Navigation.findNavController(this.getView());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("action", LOAD_COMPLETED);
+                    NavOptions navOptions = new NavOptions.Builder()
+                            .setPopUpTo(R.id.mainFragment, true).build();
+                    navController.navigate(R.id.action_makeScanFragment_to_mainFragment, bundle, navOptions);
                 }
             }
         });
-
-
     }
 
     private void setupPermission() {
-        int permission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int permission = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             makeRequest();
         }
     }
 
     private void makeRequest() {
-        String[] permissions = {Manifest.permission.CAMERA};
+        String[] permissions = {android.Manifest.permission.CAMERA};
         ActivityCompat.requestPermissions(getActivity(), permissions, CAMERA_REQUEST_CODE);
     }
 
@@ -158,7 +179,7 @@ public class MakeScanFragment extends Fragment {
         mCodeScanner = new CodeScanner(getActivity(), scannerView);
         mCodeScanner.setFormats(CodeScanner.ALL_FORMATS);
         mCodeScanner.setAutoFocusMode(AutoFocusMode.SAFE);
-        mCodeScanner.setScanMode(ScanMode.SINGLE);
+        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
         mCodeScanner.setFlashEnabled(false);
         mCodeScanner.setAutoFocusInterval(3000L);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -173,6 +194,7 @@ public class MakeScanFragment extends Fragment {
                         MakeManifestItem makeManifestItem = new MakeManifestItem();
                         makeManifestItem.setBarcode(decodedBarcode);
                         makeManifestItem.setManifestId(manifestId);
+                        mCodeScanner.setScanMode(ScanMode.PREVIEW);
                         makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
                                 .checkMakeManifestItem(makeManifestItem, user);
                     }
@@ -192,12 +214,12 @@ public class MakeScanFragment extends Fragment {
             }
         });
 
-        scannerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCodeScanner.startPreview();
-            }
-        });
+//        scannerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mCodeScanner.startPreview();
+//            }
+//        });
     }
 
     @Override

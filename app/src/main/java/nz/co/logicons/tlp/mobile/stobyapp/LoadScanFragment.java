@@ -1,18 +1,19 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
-import static nz.co.logicons.tlp.mobile.stobyapp.util.Constants.NO_INET_CONNECTION;
+import static nz.co.logicons.tlp.mobile.stobyapp.util.Constants.LOAD_COMPLETED;
 
-import android.Manifest;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.budiyev.android.codescanner.AutoFocusMode;
 import com.budiyev.android.codescanner.CodeScanner;
@@ -29,16 +33,16 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
 import com.budiyev.android.codescanner.ScanMode;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.MakeManifestItem;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.MakeManifestItemViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.ManifestItemViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
@@ -54,9 +58,11 @@ public class LoadScanFragment extends Fragment {
     private CodeScanner mCodeScanner;
     ToneGenerator toneGenerator;
     private ManifestItemViewModel manifestItemViewModel;
+    private MakeManifestItemViewModel makeManifestItemViewModel;
     private String manifestId;
-    Dialog dialog;
+    //    Dialog dialog;
     User user;
+    private Button button;
 
     public LoadScanFragment() {
         // Required empty public constructor
@@ -69,26 +75,6 @@ public class LoadScanFragment extends Fragment {
         Log.d(Constants.TAG, "onCreate: manifestId pass " + getArguments());
         setupPermission();
         toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-        dialog = new BottomSheetDialog(getActivity());
-        View view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        dialog.setContentView(view);
-        dialog.findViewById(R.id.btnComplete).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view1) {
-                        if (connectivityManager.isNetworkAvailable) {
-//                            String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
-//                            String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
-//                            User user = new User(username, password);
-//                            manifestItemViewModel.getRetroApiManifestItemClient().getAllocatedManifestItems(
-//                                    connectivityManager.isNetworkAvailable, user, new nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest(manifestId));
-                            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
     }
 
     @Override
@@ -96,6 +82,7 @@ public class LoadScanFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_load_scan, container, false);
+        view.findViewById(R.id.btnLoadComplete);
         codeScanner(view);
         return view;
     }
@@ -107,13 +94,29 @@ public class LoadScanFragment extends Fragment {
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         user = new User(username, password);
 
+        setupButton(view);
+
         manifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
                 .get(ManifestItemViewModel.class);
         manifestItemViewModel.getRetroApiManifestItemClient().getAllocatedManifestItems(
-                connectivityManager.isNetworkAvailable, user,
-                new nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest(manifestId));
+                connectivityManager.isNetworkAvailable, user, new Manifest(manifestId));
+
+        makeManifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
+                .get(MakeManifestItemViewModel.class);
 
         observeAnyChange();
+    }
+
+    private void setupButton(@NonNull View view) {
+        Button btn = view.findViewById(R.id.btnLoadComplete);
+        btn.setOnClickListener(
+                temp -> {
+                    MakeManifestItem makeManifestItem = new MakeManifestItem();
+                    makeManifestItem.setManifestId(manifestId);
+                    makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
+                            .loadCompleteMakeManifestItem(makeManifestItem, user);
+                }
+        );
     }
 
     private void observeAnyChange() {
@@ -123,48 +126,59 @@ public class LoadScanFragment extends Fragment {
                     Log.d(Constants.TAG, "observeAnyChange:ManifestItem " + manifestItemResult);
                     if (manifestItemResult instanceof Result.Error) {
                         toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2, 1000);
-                        Toast.makeText(getActivity(), "Barcode not found in this Manifest.", Toast.LENGTH_SHORT).show();
+                        String str = ((Result.Error) manifestItemResult).getError() == null ?
+                                Constants.SERVER_ERROR : ((Result.Error) manifestItemResult).getError().getMessage();
+                        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                     } else if (manifestItemResult instanceof Result.Success) {
-
                         // check if all loaded
                         Result.Success manifestItemRes = (Result.Success) manifestItemResult;
                         if (manifestItemRes.getData() instanceof String) {
-                            // bottom dialog here
-                            dialog.show();
                             Log.d(Constants.TAG, "observeAnyChange: all items loaded");
+                            Toast.makeText(getActivity(), (String) manifestItemRes.getData(), Toast.LENGTH_SHORT).show();
                             toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
                         } else {
                             Toast.makeText(getActivity(), Constants.ITEM_LOADED, Toast.LENGTH_SHORT).show();
                             toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
                         }
                     }
+                    // adding delay to scanner decoding
+                    Handler handler = new  Handler();
+                    handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 });
-
-        // pop up pag balik sa user diri not necessary?
-        manifestItemViewModel.getRetroApiManifestItemClient().getManifestItems().observe(getViewLifecycleOwner(),
-                listResult -> {
-                    Log.d(Constants.TAG, "onChanged: LoadScanFragment " + listResult);
-                    if (listResult instanceof Result.Success) {
-                        List<ManifestItem> results = (List<ManifestItem>) ((Result.Success<?>) listResult).getData();
-                        ManifestItem notLoadedManifestItem = results.stream().filter(rec -> !rec.isLoaded()).findFirst().orElse(null);
-                        if (notLoadedManifestItem == null) {
-                            dialog.show();
-                            Log.d(Constants.TAG, "observeAnyChange: all items loaded");
-                            toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
+        // load complete observer
+        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getMakeManifestItem().observe(
+                getViewLifecycleOwner(), makeManifestItemResult -> {
+                    Log.d(Constants.TAG, "observeAnyChange: makeManifestItemResult " + makeManifestItemResult);
+                    if (makeManifestItemResult instanceof Result.Error) {
+                        toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2, 1000);
+                        String str = ((Result.Error) makeManifestItemResult).getError() == null ?
+                                Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
+                        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                    }else if (makeManifestItemResult instanceof Result.Success){
+                        MakeManifestItem makeManifestItem = (MakeManifestItem)
+                                ((Result.Success)makeManifestItemResult).getData();
+                       if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")){
+                            NavController navController = Navigation.findNavController(this.getView());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("action", LOAD_COMPLETED);
+                            NavOptions navOptions = new NavOptions.Builder()
+                                    .setPopUpTo(R.id.mainFragment, true).build();
+                            navController.navigate(R.id.action_loadScanFragment_to_mainFragment, bundle, navOptions);
                         }
                     }
                 });
     }
 
     private void setupPermission() {
-        int permission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int permission = ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.CAMERA);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             makeRequest();
         }
     }
 
     private void makeRequest() {
-        String[] permissions = {Manifest.permission.CAMERA};
+        String[] permissions = {android.Manifest.permission.CAMERA};
         ActivityCompat.requestPermissions(getActivity(), permissions, CAMERA_REQUEST_CODE);
     }
 
@@ -173,7 +187,7 @@ public class LoadScanFragment extends Fragment {
         mCodeScanner = new CodeScanner(getActivity(), scannerView);
         mCodeScanner.setFormats(CodeScanner.ALL_FORMATS);
         mCodeScanner.setAutoFocusMode(AutoFocusMode.SAFE);
-        mCodeScanner.setScanMode(ScanMode.SINGLE);
+        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
         mCodeScanner.setFlashEnabled(false);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -186,6 +200,7 @@ public class LoadScanFragment extends Fragment {
                         ManifestItem manifestItem = new ManifestItem();
                         manifestItem.setManifestId(manifestId);
                         manifestItem.setBarCode(result.getText());
+                        mCodeScanner.setScanMode(ScanMode.PREVIEW);
                         manifestItemViewModel.getRetroApiManifestItemClient()
                                 .checkManifestItem(user, manifestItem);
                     }
@@ -205,12 +220,12 @@ public class LoadScanFragment extends Fragment {
             }
         });
 
-        scannerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCodeScanner.startPreview();
-            }
-        });
+//        scannerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mCodeScanner.startPreview();
+//            }
+//        });
     }
 
     @Override

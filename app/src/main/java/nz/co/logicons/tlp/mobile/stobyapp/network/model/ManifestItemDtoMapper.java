@@ -13,6 +13,7 @@ public class ManifestItemDtoMapper implements DomainMapper<ManifestItemDto, Mani
     @Override
     public ManifestItem mapToDomainModel(ManifestItemDto model) {
         return new ManifestItem(
+                model.getItemMovementId(),
                 model.getManifestId(),
                 model.getMovementId(),
                 model.getJobId(),
@@ -27,6 +28,7 @@ public class ManifestItemDtoMapper implements DomainMapper<ManifestItemDto, Mani
     @Override
     public ManifestItemDto mapFromDomainModel(ManifestItem manifestItem) {
         return new ManifestItemDto(
+                manifestItem.getItemMovementId(),
                 manifestItem.getManifestId(),
                 manifestItem.getMovementId(),
                 manifestItem.getJobId(),

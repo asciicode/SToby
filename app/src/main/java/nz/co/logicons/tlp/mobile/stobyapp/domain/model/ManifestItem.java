@@ -5,6 +5,8 @@ package nz.co.logicons.tlp.mobile.stobyapp.domain.model;
  */
 public class ManifestItem {
 
+    private String itemMovementId;
+
     private String manifestId;
 
     private String movementId;
@@ -53,11 +55,13 @@ public class ManifestItem {
         return loaded;
     }
 
-    public ManifestItem(){}
-    public ManifestItem(String manifestId, String movementId, String jobId, String itemId, String barCode,
-            String productId, String customerId, boolean loaded)
-    {
+    public ManifestItem() {
+    }
+
+    public ManifestItem(String itemMovementId, String manifestId, String movementId, String jobId, String itemId,
+            String barCode, String productId, String customerId, boolean loaded) {
         super();
+        this.itemMovementId = itemMovementId;
         this.manifestId = manifestId;
         this.movementId = movementId;
         this.jobId = jobId;
@@ -68,52 +72,51 @@ public class ManifestItem {
         this.loaded = loaded;
     }
 
-    public void setManifestId(String manifestId)
-    {
+    public void setManifestId(String manifestId) {
         this.manifestId = manifestId;
     }
 
-    public void setMovementId(String movementId)
-    {
+    public void setMovementId(String movementId) {
         this.movementId = movementId;
     }
 
-    public void setJobId(String jobId)
-    {
+    public void setJobId(String jobId) {
         this.jobId = jobId;
     }
 
-    public void setItemId(String itemId)
-    {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
-    public void setBarCode(String barCode)
-    {
+    public void setBarCode(String barCode) {
         this.barCode = barCode;
     }
 
-    public void setProductId(String productId)
-    {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public void setCustomerId(String customerId)
-    {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public void setLoaded(boolean loaded)
-    {
+    public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public String getItemMovementId() {
+        return itemMovementId;
+    }
+
+    public void setItemMovementId(String itemMovementId) {
+        this.itemMovementId = itemMovementId;
     }
 
     @Override
-    public String toString()
-    {
-        return "ManifestItem [manifestId=" + manifestId + ", movementId=" + movementId + ", jobId=" + jobId + ", itemId="
-                + itemId + ", barCode=" + barCode + ", productId=" + productId + ", customerId=" + customerId + ", loaded="
-                + loaded + "]";
+    public String toString() {
+        return "ManifestItem [itemMovementId=" + itemMovementId + ", manifestId=" + manifestId + ", movementId="
+                + movementId + ", jobId=" + jobId + ", itemId=" + itemId + ", barCode=" + barCode + ", productId=" + productId
+                + ", customerId=" + customerId + ", loaded=" + loaded + "]";
     }
 
 
