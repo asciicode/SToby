@@ -23,40 +23,42 @@
         app:autoFocusButtonVisible="true"
         app:flashButtonColor="@android:color/white"
         app:flashButtonVisible="true"
-        app:frameColor="@android:color/white"
-        app:frameCornersSize="50dp"
-        app:frameCornersRadius="0dp"
-        app:frameAspectRatioWidth="1"
         app:frameAspectRatioHeight="1"
+        app:frameAspectRatioWidth="1"
+        app:frameColor="@android:color/white"
+        app:frameCornersRadius="0dp"
+        app:frameCornersSize="50dp"
         app:frameSize="0.75"
         app:frameThickness="2dp"
-        app:maskColor="#77000000"/>
+        app:maskColor="#77000000" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/scanner_view" >
+        android:layout_below="@+id/scanner_view"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvScanText"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTitle"
+            style="@style/scannerTitleTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="Load Manifest Scanning..."
-            android:textColor="@color/black" />
+            android:text="Load Manifest " />
+
+        <TextView
+            android:id="@+id/tvScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scanning..."
+            style="@style/scanningTextView"
+            />
 
         <Button
             android:id="@+id/btnLoadComplete"
-            android:layout_width="150dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
             style="@style/LoginButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Load Complete" />
     </LinearLayout>
 

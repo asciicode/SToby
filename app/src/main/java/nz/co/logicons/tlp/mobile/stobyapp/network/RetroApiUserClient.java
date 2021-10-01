@@ -9,9 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.json.JSONObject;
 
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
 import nz.co.logicons.tlp.mobile.stobyapp.AppExecutors;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.UserDao;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.UserEntity;
@@ -70,14 +67,14 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
             loginUserRunnable = null;
         }
         loginUserRunnable = new LoginUserRunnable(isNetworkAvailable, user);
-        final Future myHandler = AppExecutors.getInstance().networkIO().submit(loginUserRunnable);
+        AppExecutors.getInstance().networkIO().execute(loginUserRunnable);
 
-        AppExecutors.getInstance().networkIO().schedule(new Runnable() {
-            @Override
-            public void run() {
-                myHandler.cancel(true);
-            }
-        }, 5000, TimeUnit.MILLISECONDS);
+//        AppExecutors.getInstance().networkIO().schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//                myHandler.cancel(true);
+//            }
+//        }, 5000, TimeUnit.MILLISECONDS);
     }
 
     private class LoginUserRunnable implements Runnable {
@@ -92,7 +89,9 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
         public void run() {
             try {
                 // TODO offline storage
-//                userData.postValue(new Result.Loading(true));
+                userData.postValue(new Result.Loading(true));
+
+//                Thread.sleep(5000);
 //                User uzer = getUserFromCache(user);
 //                if (uzer != null){
 //                    userData.postValue(new Result.Success<>(userDtoMapper.mapFromDomainModel(user)));

@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_manifestListFragment"
-            app:destination="@id/manifestListFragment" />
+            app:destination="@id/manifestListFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/loadMenuFragment"
@@ -22,10 +26,18 @@
         <argument android:name="manifestId" android:defaultValue=""/>
         <action
             android:id="@+id/action_loadMenuFragment_to_loadListFragment"
-            app:destination="@id/loadListFragment" />
+            app:destination="@id/loadListFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_loadMenuFragment_to_loadScanFragment"
-            app:destination="@id/loadScanFragment" />
+            app:destination="@id/loadScanFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/loadListFragment"
@@ -44,7 +56,9 @@
         <argument android:name="manifestId" android:defaultValue=""/>
         <action
             android:id="@+id/action_loadScanFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            />
+
     </fragment>
     <fragment
         android:id="@+id/makeMenuFragment"
@@ -54,10 +68,18 @@
         <argument android:name="manifestId" android:defaultValue=""/>
         <action
             android:id="@+id/action_makeMenuFragment_to_makeListFragment"
-            app:destination="@id/makeListFragment" />
+            app:destination="@id/makeListFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_makeMenuFragment_to_makeScanFragment"
-            app:destination="@id/makeScanFragment" />
+            app:destination="@id/makeScanFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/makeListFragment"
@@ -76,7 +98,7 @@
         <argument android:name="action" android:defaultValue=""/>
         <action
             android:id="@+id/action_makeScanFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -87,7 +109,11 @@
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/manifestListFragment"
@@ -97,9 +123,17 @@
 
         <action
             android:id="@+id/action_manifestListFragment_to_makeMenuFragment"
-            app:destination="@id/makeMenuFragment" />
+            app:destination="@id/makeMenuFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_manifestListFragment_to_loadMenuFragment"
-            app:destination="@id/loadMenuFragment" />
+            app:destination="@id/loadMenuFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
 </navigation>

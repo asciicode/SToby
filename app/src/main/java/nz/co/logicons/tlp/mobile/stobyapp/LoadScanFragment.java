@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.transition.TransitionInflater;
 
 import com.budiyev.android.codescanner.AutoFocusMode;
 import com.budiyev.android.codescanner.CodeScanner;
@@ -33,6 +36,8 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
 import com.budiyev.android.codescanner.ScanMode;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import javax.inject.Inject;
 
@@ -63,7 +68,8 @@ public class LoadScanFragment extends Fragment {
     //    Dialog dialog;
     User user;
     private Button button;
-
+    private TextView tvTitle;
+    private TextView tvScan;
     public LoadScanFragment() {
         // Required empty public constructor
     }
@@ -93,7 +99,11 @@ public class LoadScanFragment extends Fragment {
         String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         user = new User(username, password);
-
+        tvTitle = view.findViewById(R.id.tvTitle);
+        tvTitle.setText(String.format("Load Manifest %s ", manifestId));
+        tvScan = view.findViewById(R.id.tvScan);
+        YoYo.with(Techniques.SlideInLeft).duration(1000)
+                .repeat(Animation.INFINITE).playOn(tvScan);
         setupButton(view);
 
         manifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
@@ -105,6 +115,7 @@ public class LoadScanFragment extends Fragment {
                 .get(MakeManifestItemViewModel.class);
 
         observeAnyChange();
+
     }
 
     private void setupButton(@NonNull View view) {
@@ -142,7 +153,7 @@ public class LoadScanFragment extends Fragment {
                         }
                     }
                     // adding delay to scanner decoding
-                    Handler handler = new  Handler();
+                    Handler handler = new Handler();
                     handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 });
         // load complete observer
@@ -154,16 +165,29 @@ public class LoadScanFragment extends Fragment {
                         String str = ((Result.Error) makeManifestItemResult).getError() == null ?
                                 Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                         Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-                    }else if (makeManifestItemResult instanceof Result.Success){
+                    } else if (makeManifestItemResult instanceof Result.Success) {
                         MakeManifestItem makeManifestItem = (MakeManifestItem)
-                                ((Result.Success)makeManifestItemResult).getData();
-                       if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")){
+                                ((Result.Success) makeManifestItemResult).getData();
+                        if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")) {
                             NavController navController = Navigation.findNavController(this.getView());
                             Bundle bundle = new Bundle();
                             bundle.putString("action", LOAD_COMPLETED);
+//                          find workaround animation issue if using popUpTo
+                            TransitionInflater inflater = TransitionInflater.from(requireContext());
+                            setExitTransition(inflater.inflateTransition(R.transition.slide_right));
+
                             NavOptions navOptions = new NavOptions.Builder()
-                                    .setPopUpTo(R.id.mainFragment, true).build();
-                            navController.navigate(R.id.action_loadScanFragment_to_mainFragment, bundle, navOptions);
+                                    .setPopUpTo(R.id.mainFragment, true)
+//                                    .setPopEnterAnim(R.anim.slide_in_right)
+//                                    .setPopExitAnim(R.anim.slide_out_left)
+//                                    .setEnterAnim(R.anim.slide_in_left)
+//                                    .setExitAnim(R.anim.slide_out_right)
+                                    .build();
+                            navController.navigate(R.id.action_loadScanFragment_to_mainFragment,
+                                    bundle, navOptions);
+//                            navController.popBackStack(R.id.mainFragment, true);
+//                            navController.navigate(R.id.mainFragment, bundle, navOptions);
+
                         }
                     }
                 });

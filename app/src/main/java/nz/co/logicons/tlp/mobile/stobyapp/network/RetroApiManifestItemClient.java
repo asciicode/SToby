@@ -151,8 +151,6 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
                     List<ManifestItem> domainItems = manifestItemDtoMapper.toDomainList(items);
                     for (ManifestItem item : domainItems) {
                         ManifestItemEntity manifestItemEntity = manifestItemEntityMapper.mapFromDomainModel(item);
-                        Log.d(Constants.TAG, "ManifestItem : " + item);
-                        Log.d(Constants.TAG, "ManifestItemEntity : " + manifestItemEntity);
                         manifestItemDao.insert(manifestItemEntity);
                     }
                 } else if (response.errorBody() != null) {
