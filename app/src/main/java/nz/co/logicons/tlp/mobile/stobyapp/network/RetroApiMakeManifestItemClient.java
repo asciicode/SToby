@@ -15,12 +15,12 @@ import nz.co.logicons.tlp.mobile.stobyapp.AppExecutors;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.ManifestItemDao;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestItemEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
-import nz.co.logicons.tlp.mobile.stobyapp.domain.model.MakeManifestItem;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
-import nz.co.logicons.tlp.mobile.stobyapp.network.model.MakeManifestItemDto;
-import nz.co.logicons.tlp.mobile.stobyapp.network.model.MakeManifestItemDtoMapper;
+import nz.co.logicons.tlp.mobile.stobyapp.network.model.ActionManifestItemDto;
+import nz.co.logicons.tlp.mobile.stobyapp.network.model.ActionManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestItemDto;
 import nz.co.logicons.tlp.mobile.stobyapp.network.model.ManifestItemDtoMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
@@ -35,7 +35,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
     private ManifestItemDtoMapper manifestItemDtoMapper;
     private ManifestItemDao manifestItemDao;
     private ManifestItemEntityMapper manifestItemEntityMapper;
-    private MakeManifestItemDtoMapper makeManifestItemDtoMapper;
+    private ActionManifestItemDtoMapper actionManifestItemDtoMapper;
 
     private MutableLiveData<Result<List<ManifestItem>>> manifestItems = new MutableLiveData<>();
 
@@ -43,41 +43,41 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
         return manifestItems;
     }
 
-    private MutableLiveData<Result<MakeManifestItem>> resultMakeManifestItem = new MutableLiveData<>();
+    private MutableLiveData<Result<ActionManifestItem>> resultActionManifestItem = new MutableLiveData<>();
 
-    public LiveData<Result<MakeManifestItem>> getMakeManifestItem() {
-        return resultMakeManifestItem;
+    public LiveData<Result<ActionManifestItem>> getActionManifestItem() {
+        return resultActionManifestItem;
     }
 
     public RetroApiMakeManifestItemClient(SharedPreferences sharedPreferences,
             ManifestItemDtoMapper manifestItemDtoMapper, ManifestItemDao manifestItemDao,
             ManifestItemEntityMapper manifestItemEntityMapper,
-            MakeManifestItemDtoMapper makeManifestItemDtoMapper) {
+            ActionManifestItemDtoMapper actionManifestItemDtoMapper) {
         this.sharedPreferences = sharedPreferences;
         this.manifestItemDtoMapper = manifestItemDtoMapper;
         this.manifestItemDao = manifestItemDao;
         this.manifestItemEntityMapper = manifestItemEntityMapper;
-        this.makeManifestItemDtoMapper = makeManifestItemDtoMapper;
+        this.actionManifestItemDtoMapper = actionManifestItemDtoMapper;
     }
 
-    private Call<MakeManifestItemDto> loadCompleteMakeManifestItem(MakeManifestItem makeManifestItem,
+    private Call<ActionManifestItemDto> loadCompleteActionManifestItem(ActionManifestItem actionManifestItem,
             String username, String password) {
-        return retroApiService.loadCompleteMakeManifestItem(makeManifestItem, username, password);
+        return retroApiService.loadCompleteActionManifestItem(actionManifestItem, username, password);
     }
 
-    private Call<MakeManifestItemDto> completeInwardManifest(MakeManifestItem makeManifestItem,
+    private Call<ActionManifestItemDto> completeInwardManifest(ActionManifestItem actionManifestItem,
             String username, String password) {
-        return retroApiService.completeInwardManifest(makeManifestItem, username, password);
+        return retroApiService.completeInwardManifest(actionManifestItem, username, password);
     }
 
-    private Call<MakeManifestItemDto> checkMakeManifestItem(MakeManifestItem makeManifestItem,
+    private Call<ActionManifestItemDto> checkMakeManifestItem(ActionManifestItem actionManifestItem,
             String username, String password) {
-        return retroApiService.checkMakeManifestItem(makeManifestItem, username, password);
+        return retroApiService.checkMakeManifestItem(actionManifestItem, username, password);
     }
 
-    private Call<MakeManifestItemDto> removeMakeManifestItem(MakeManifestItem makeManifestItem,
+    private Call<ActionManifestItemDto> removeMakeManifestItem(ActionManifestItem actionManifestItem,
             String username, String password) {
-        return retroApiService.removeMakeManifestItem(makeManifestItem, username, password);
+        return retroApiService.removeMakeManifestItem(actionManifestItem, username, password);
     }
 
     private Call<List<ManifestItemDto>> getAllocatedManifestItems(Manifest manifest,
@@ -87,182 +87,182 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
 
     private CompleteInwardManifestRunnable completeInwardManifestRunnable;
 
-    public void completeInwardManifest(MakeManifestItem makeManifestItem, User user) {
+    public void completeInwardManifest(ActionManifestItem actionManifestItem, User user) {
         initRetroApi(sharedPreferences);
         if (checkMakeManifestItemRunnable != null) {
             checkMakeManifestItemRunnable = null;
         }
-        completeInwardManifestRunnable = new CompleteInwardManifestRunnable(makeManifestItem, user);
+        completeInwardManifestRunnable = new CompleteInwardManifestRunnable(actionManifestItem, user);
         AppExecutors.getInstance().networkIO().execute(completeInwardManifestRunnable);
     }
 
     private class CompleteInwardManifestRunnable implements Runnable {
         private User user;
-        private MakeManifestItem makeManifestItem;
+        private ActionManifestItem actionManifestItem;
 
-        public CompleteInwardManifestRunnable(MakeManifestItem makeManifestItem, User user) {
+        public CompleteInwardManifestRunnable(ActionManifestItem actionManifestItem, User user) {
             this.user = user;
-            this.makeManifestItem = makeManifestItem;
+            this.actionManifestItem = actionManifestItem;
         }
 
         @Override
         public void run() {
             try {
-                Response response = completeInwardManifest(makeManifestItem,
+                Response response = completeInwardManifest(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {
                     Log.d(Constants.TAG, "RetroApiMakeManifestItemClient : " + response.body());
-                    MakeManifestItemDto makeManifestItemDto = (MakeManifestItemDto) response.body();
-                    resultMakeManifestItem.postValue(new Result.Success<>(
-                            makeManifestItemDtoMapper.mapToDomainModel(makeManifestItemDto)));
+                    ActionManifestItemDto actionManifestItemDto = (ActionManifestItemDto) response.body();
+                    resultActionManifestItem.postValue(new Result.Success<>(
+                            actionManifestItemDtoMapper.mapToDomainModel(actionManifestItemDto)));
                 } else if (response.errorBody() != null) {
                     JSONObject jObjError = new JSONObject(response.errorBody().string());
                     String errMsg = (String) jObjError.get("message");
                     Log.v(Constants.TAG, "Error " + response.errorBody());
                     Exception exception = TextUtils.isEmpty(errMsg) ? null
                             : new Exception(errMsg);
-                    resultMakeManifestItem.postValue(new Result.Error(exception));
+                    resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                resultMakeManifestItem.postValue(new Result.Error(e));
+                resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
     }
 
     private RemoveMakeManifestItemRunnable removeMakeManifestItemRunnable;
 
-    public void removeMakeManifestItem(MakeManifestItem makeManifestItem, User user) {
+    public void removeMakeManifestItem(ActionManifestItem actionManifestItem, User user) {
         initRetroApi(sharedPreferences);
         if (checkMakeManifestItemRunnable != null) {
             checkMakeManifestItemRunnable = null;
         }
-        removeMakeManifestItemRunnable = new RemoveMakeManifestItemRunnable(makeManifestItem, user);
+        removeMakeManifestItemRunnable = new RemoveMakeManifestItemRunnable(actionManifestItem, user);
         AppExecutors.getInstance().networkIO().execute(removeMakeManifestItemRunnable);
     }
 
     private class RemoveMakeManifestItemRunnable implements Runnable {
         private User user;
-        private MakeManifestItem makeManifestItem;
+        private ActionManifestItem actionManifestItem;
 
-        public RemoveMakeManifestItemRunnable(MakeManifestItem makeManifestItem, User user) {
+        public RemoveMakeManifestItemRunnable(ActionManifestItem actionManifestItem, User user) {
             this.user = user;
-            this.makeManifestItem = makeManifestItem;
+            this.actionManifestItem = actionManifestItem;
         }
 
         @Override
         public void run() {
             try {
-                Response response = removeMakeManifestItem(makeManifestItem,
+                Response response = removeMakeManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {
                     Log.d(Constants.TAG, "RetroApiMakeManifestItemClient : " + response.body());
-                    MakeManifestItemDto makeManifestItemDto = (MakeManifestItemDto) response.body();
-                    resultMakeManifestItem.postValue(new Result.Success<>(
-                            makeManifestItemDtoMapper.mapToDomainModel(makeManifestItemDto)));
+                    ActionManifestItemDto actionManifestItemDto = (ActionManifestItemDto) response.body();
+                    resultActionManifestItem.postValue(new Result.Success<>(
+                            actionManifestItemDtoMapper.mapToDomainModel(actionManifestItemDto)));
                 } else if (response.errorBody() != null) {
                     JSONObject jObjError = new JSONObject(response.errorBody().string());
                     String errMsg = (String) jObjError.get("message");
                     Log.v(Constants.TAG, "Error " + response.errorBody());
                     Exception exception = TextUtils.isEmpty(errMsg) ? null
                             : new Exception(errMsg);
-                    resultMakeManifestItem.postValue(new Result.Error(exception));
+                    resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                resultMakeManifestItem.postValue(new Result.Error(e));
+                resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
     }
 
     private CheckMakeManifestItemRunnable checkMakeManifestItemRunnable;
 
-    public void checkMakeManifestItem(MakeManifestItem makeManifestItem, User user) {
+    public void checkMakeManifestItem(ActionManifestItem actionManifestItem, User user) {
         initRetroApi(sharedPreferences);
         if (checkMakeManifestItemRunnable != null) {
             checkMakeManifestItemRunnable = null;
         }
-        checkMakeManifestItemRunnable = new CheckMakeManifestItemRunnable(makeManifestItem, user);
+        checkMakeManifestItemRunnable = new CheckMakeManifestItemRunnable(actionManifestItem, user);
         AppExecutors.getInstance().networkIO().execute(checkMakeManifestItemRunnable);
     }
 
     private class CheckMakeManifestItemRunnable implements Runnable {
         private User user;
-        private MakeManifestItem makeManifestItem;
+        private ActionManifestItem actionManifestItem;
 
-        public CheckMakeManifestItemRunnable(MakeManifestItem makeManifestItem, User user) {
+        public CheckMakeManifestItemRunnable(ActionManifestItem actionManifestItem, User user) {
             this.user = user;
-            this.makeManifestItem = makeManifestItem;
+            this.actionManifestItem = actionManifestItem;
         }
 
         @Override
         public void run() {
             try {
-                Response response = checkMakeManifestItem(makeManifestItem,
+                Response response = checkMakeManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {
                     Log.d(Constants.TAG, "RetroApiMakeManifestItemClient : " + response.body());
-                    MakeManifestItemDto makeManifestItemDto = (MakeManifestItemDto) response.body();
-                    resultMakeManifestItem.postValue(new Result.Success<>(
-                            makeManifestItemDtoMapper.mapToDomainModel(makeManifestItemDto)));
+                    ActionManifestItemDto actionManifestItemDto = (ActionManifestItemDto) response.body();
+                    resultActionManifestItem.postValue(new Result.Success<>(
+                            actionManifestItemDtoMapper.mapToDomainModel(actionManifestItemDto)));
                 } else if (response.errorBody() != null) {
                     JSONObject jObjError = new JSONObject(response.errorBody().string());
                     String errMsg = (String) jObjError.get("message");
                     Log.v(Constants.TAG, "Error " + response.errorBody());
                     Exception exception = TextUtils.isEmpty(errMsg) ? null
                             : new Exception(errMsg);
-                    resultMakeManifestItem.postValue(new Result.Error(exception));
+                    resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                resultMakeManifestItem.postValue(new Result.Error(e));
+                resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
     }
 
-    private LoadCompleteMakeManifestItemRunnable loadCompleteMakeManifestItemRunnable;
+    private LoadCompleteActionManifestItemRunnable loadCompleteActionManifestItemRunnable;
 
-    public void loadCompleteMakeManifestItem(MakeManifestItem makeManifestItem, User user) {
+    public void loadCompleteActionManifestItem(ActionManifestItem actionManifestItem, User user) {
         initRetroApi(sharedPreferences);
         if (checkMakeManifestItemRunnable != null) {
             checkMakeManifestItemRunnable = null;
         }
-        loadCompleteMakeManifestItemRunnable =
-                new LoadCompleteMakeManifestItemRunnable(makeManifestItem, user);
-        AppExecutors.getInstance().networkIO().execute(loadCompleteMakeManifestItemRunnable);
+        loadCompleteActionManifestItemRunnable =
+                new LoadCompleteActionManifestItemRunnable(actionManifestItem, user);
+        AppExecutors.getInstance().networkIO().execute(loadCompleteActionManifestItemRunnable);
     }
 
-    private class LoadCompleteMakeManifestItemRunnable implements Runnable {
+    private class LoadCompleteActionManifestItemRunnable implements Runnable {
         private User user;
-        private MakeManifestItem makeManifestItem;
+        private ActionManifestItem actionManifestItem;
 
-        public LoadCompleteMakeManifestItemRunnable(MakeManifestItem makeManifestItem, User user) {
+        public LoadCompleteActionManifestItemRunnable(ActionManifestItem actionManifestItem, User user) {
             this.user = user;
-            this.makeManifestItem = makeManifestItem;
+            this.actionManifestItem = actionManifestItem;
         }
 
         @Override
         public void run() {
             try {
-                Response response = loadCompleteMakeManifestItem(makeManifestItem,
+                Response response = loadCompleteActionManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {
                     Log.d(Constants.TAG, "RetroApiMakeManifestItemClient : " + response.body());
-                    MakeManifestItemDto makeManifestItemDto = (MakeManifestItemDto) response.body();
-                    resultMakeManifestItem.postValue(new Result.Success<>(
-                            makeManifestItemDtoMapper.mapToDomainModel(makeManifestItemDto)));
-                    manifestItemDao.deleteByManifestId(makeManifestItem.getManifestId());
+                    ActionManifestItemDto actionManifestItemDto = (ActionManifestItemDto) response.body();
+                    resultActionManifestItem.postValue(new Result.Success<>(
+                            actionManifestItemDtoMapper.mapToDomainModel(actionManifestItemDto)));
+                    manifestItemDao.deleteByManifestId(actionManifestItem.getManifestId());
                 } else if (response.errorBody() != null) {
                     JSONObject jObjError = new JSONObject(response.errorBody().string());
                     String errMsg = (String) jObjError.get("message");
                     Log.v(Constants.TAG, "Error " + response.errorBody());
                     Exception exception = TextUtils.isEmpty(errMsg) ? null
                             : new Exception(errMsg);
-                    resultMakeManifestItem.postValue(new Result.Error(exception));
+                    resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                resultMakeManifestItem.postValue(new Result.Error(e));
+                resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
     }

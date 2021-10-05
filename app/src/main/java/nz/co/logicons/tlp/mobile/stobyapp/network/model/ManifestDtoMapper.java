@@ -12,28 +12,37 @@ import nz.co.logicons.tlp.mobile.stobyapp.domain.util.DomainMapper;
 public class ManifestDtoMapper implements DomainMapper<ManifestDto, Manifest> {
     @Override
     public Manifest mapToDomainModel(ManifestDto model) {
-        Manifest ret = new Manifest(model.getId());
-        return ret;
+        return new Manifest(
+                model.getId(), model.isAllocated(), model.getService(),
+                model.getWorkType(), model.getDriver(),
+                model.getVehicle(), model.getTrailer1(), model.getTrailer2(),
+                model.getTrailer3(), model.getFrom(), model.getTo(),
+                model.isStoreLoad()
+        );
     }
 
     @Override
-    public ManifestDto mapFromDomainModel(Manifest model) {
-        ManifestDto ret = new ManifestDto();
-        ret.setId(model.getId());
-        return ret;
+    public ManifestDto mapFromDomainModel(Manifest domainModel) {
+        return new ManifestDto(
+                domainModel.getId(), domainModel.isAllocated(), domainModel.getService(),
+                domainModel.getWorkType(), domainModel.getDriver(),
+                domainModel.getVehicle(), domainModel.getTrailer1(), domainModel.getTrailer2(),
+                domainModel.getTrailer3(), domainModel.getFrom(), domainModel.getTo(),
+                domainModel.isStoreLoad()
+        );
     }
 
-    public List<Manifest> toDomainList(List<ManifestDto> manifestDtos){
+    public List<Manifest> toDomainList(List<ManifestDto> manifestDtos) {
         List<Manifest> list = new ArrayList<>();
-        for (ManifestDto rec : manifestDtos){
+        for (ManifestDto rec : manifestDtos) {
             list.add(mapToDomainModel(rec));
         }
         return list;
     }
 
-    public List<ManifestDto> fromDomainList(List<Manifest> manifests){
+    public List<ManifestDto> fromDomainList(List<Manifest> manifests) {
         List<ManifestDto> list = new ArrayList<>();
-        for (Manifest rec : manifests){
+        for (Manifest rec : manifests) {
             list.add(mapFromDomainModel(rec));
         }
         return list;

@@ -16,12 +16,25 @@ public class Manifest {
     private String from;
     private String to;
     private boolean storeLoad;
-
-    public Manifest() {
-    }
-
-    public Manifest(String id) {
+    public Manifest(){}
+    public Manifest(String id){
         this.id = id;
+    }
+    public Manifest(String id, boolean allocated, String service, String workType, String driver,
+            String vehicle, String trailer1, String trailer2, String trailer3, String from, String to,
+            boolean storeLoad) {
+        this.id = id;
+        this.allocated = allocated;
+        this.service = service;
+        this.workType = workType;
+        this.driver = driver;
+        this.vehicle = vehicle;
+        this.trailer1 = trailer1;
+        this.trailer2 = trailer2;
+        this.trailer3 = trailer3;
+        this.from = from;
+        this.to = to;
+        this.storeLoad = storeLoad;
     }
 
     public String getId() {
@@ -118,5 +131,23 @@ public class Manifest {
 
     public void setStoreLoad(boolean storeLoad) {
         this.storeLoad = storeLoad;
+    }
+
+    @Override
+    public String toString() {
+        return "Manifest{" +
+                "id='" + id + '\'' +
+                ", allocated=" + allocated +
+                ", service='" + service + '\'' +
+                ", workType='" + workType + '\'' +
+                ", driver='" + driver + '\'' +
+                ", vehicle='" + vehicle + '\'' +
+                ", trailer1='" + trailer1 + '\'' +
+                ", trailer2='" + trailer2 + '\'' +
+                ", trailer3='" + trailer3 + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", storeLoad=" + storeLoad +
+                '}';
     }
 }

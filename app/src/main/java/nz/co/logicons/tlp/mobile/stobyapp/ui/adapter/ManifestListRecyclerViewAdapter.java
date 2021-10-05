@@ -58,6 +58,10 @@ public class ManifestListRecyclerViewAdapter extends RecyclerView.Adapter<Manife
     public void onBindViewHolder(@NonNull ManifestListRecyclerViewHolder holder, int position) {
         ManifestListRecyclerModel manifestListRecyclerModel = list.get(position);
         holder.tvManifestId.setText(manifestListRecyclerModel.getId());
+        holder.tvService.setText(manifestListRecyclerModel.getService());
+        holder.tvWorkType.setText(manifestListRecyclerModel.getWorkType());
+        holder.tvFrom.setText(manifestListRecyclerModel.getFrom());
+        holder.tvTo.setText(manifestListRecyclerModel.getTo());
 //        Glide.with(holder.itemView.getContext())
 //                .load(R.drawable.logo)
 //                .placeholder(R.drawable.ic_arrow_forward)

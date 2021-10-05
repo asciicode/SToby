@@ -3,18 +3,18 @@ package nz.co.logicons.tlp.mobile.stobyapp.domain.model;
 /*
  * @author by Allen
  */
-public class MakeManifestItem {
+public class ActionManifestItem {
     private String action;
     private String manifestId;
     private String barcode;
     private String jobId;
     private String jobItemId;
 
-    public MakeManifestItem()
+    public ActionManifestItem()
     {
     }
 
-    public MakeManifestItem(String action, String manifestId, String barcode, String jobId, String jobItemId) {
+    public ActionManifestItem(String action, String manifestId, String barcode, String jobId, String jobItemId) {
         this.action = action;
         this.manifestId = manifestId;
         this.barcode = barcode;

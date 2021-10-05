@@ -45,7 +45,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
-import nz.co.logicons.tlp.mobile.stobyapp.domain.model.MakeManifestItem;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.MakeManifestItemViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
@@ -67,7 +67,7 @@ public class MakeScanFragment extends Fragment {
     User user;
     private TextView tvTitle;
     private TextView tvScan;
-    private MakeManifestItem currentMakeManifestItem;
+    private ActionManifestItem currentActionManifestItem;
 
     public MakeScanFragment() {
         // Required empty public constructor
@@ -86,7 +86,7 @@ public class MakeScanFragment extends Fragment {
         dialog.findViewById(R.id.btnYes).setOnClickListener(view1 -> {
             if (connectivityManager.isNetworkAvailable) {
                 makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
-                        .removeMakeManifestItem(currentMakeManifestItem, user);
+                        .removeMakeManifestItem(currentActionManifestItem, user);
             } else {
                 Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
             }
@@ -132,15 +132,15 @@ public class MakeScanFragment extends Fragment {
         Button btn = view.findViewById(R.id.btnLoadComplete);
         btn.setOnClickListener(
             temp -> {
-                MakeManifestItem makeManifestItem = new MakeManifestItem();
-                makeManifestItem.setManifestId(manifestId);
+                ActionManifestItem actionManifestItem = new ActionManifestItem();
+                actionManifestItem.setManifestId(manifestId);
                 makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
-                        .loadCompleteMakeManifestItem(makeManifestItem, user);
+                        .loadCompleteActionManifestItem(actionManifestItem, user);
             }
         );
     }
     private void observeAnyChange() {
-        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getMakeManifestItem().observe(
+        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getActionManifestItem().observe(
                 getViewLifecycleOwner(), makeManifestItemResult -> {
             Log.d(Constants.TAG, "observeAnyChange: makeManifestItemResult " + makeManifestItemResult);
             if (makeManifestItemResult instanceof Result.Error) {
@@ -149,19 +149,19 @@ public class MakeScanFragment extends Fragment {
                         Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                 Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
             }else if (makeManifestItemResult instanceof Result.Success){
-                MakeManifestItem makeManifestItem = (MakeManifestItem)
+                ActionManifestItem actionManifestItem = (ActionManifestItem)
                         ((Result.Success)makeManifestItemResult).getData();
-                if (TextUtils.equals(makeManifestItem.getAction(), "ItemAdded")){
+                if (TextUtils.equals(actionManifestItem.getAction(), "ItemAdded")){
                     Toast.makeText(getActivity(), Constants.ITEM_LOADED, Toast.LENGTH_SHORT).show();
                     toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
-                }else if (TextUtils.equals(makeManifestItem.getAction(), "ItemRemove")){
-                    currentMakeManifestItem = makeManifestItem;
+                }else if (TextUtils.equals(actionManifestItem.getAction(), "ItemRemove")){
+                    currentActionManifestItem = actionManifestItem;
                     dialog.show();
                     toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
-                }else if (TextUtils.equals(makeManifestItem.getAction(), "ItemRemoved")){
+                }else if (TextUtils.equals(actionManifestItem.getAction(), "ItemRemoved")){
                     dialog.hide();
                     Toast.makeText(getActivity(), Constants.ITEM_REMOVED, Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")){
+                }else if (TextUtils.equals(actionManifestItem.getAction(), "LoadCompleted")){
                     NavController navController = Navigation.findNavController(this.getView());
                     Bundle bundle = new Bundle();
                     bundle.putString("action", LOAD_COMPLETED);
@@ -211,12 +211,12 @@ public class MakeScanFragment extends Fragment {
                         Log.d(Constants.TAG, "run: result.getText() " + result.getText());
 //                        String decodedBarcode = result.getText();
                         String decodedBarcode = "Item000014010001";
-                        MakeManifestItem makeManifestItem = new MakeManifestItem();
-                        makeManifestItem.setBarcode(decodedBarcode);
-                        makeManifestItem.setManifestId(manifestId);
+                        ActionManifestItem actionManifestItem = new ActionManifestItem();
+                        actionManifestItem.setBarcode(decodedBarcode);
+                        actionManifestItem.setManifestId(manifestId);
                         mCodeScanner.setScanMode(ScanMode.PREVIEW);
                         makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
-                                .checkMakeManifestItem(makeManifestItem, user);
+                                .checkMakeManifestItem(actionManifestItem, user);
                     }
                 });
             }

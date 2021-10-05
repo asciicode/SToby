@@ -123,6 +123,10 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
                         ManifestListRecyclerModel manifestListRecyclerModel = new ManifestListRecyclerModel();
                         manifestListRecyclerModel.setId(res.getId());
                         manifestListRecyclerModel.setDriver(res.getDriver());
+                        manifestListRecyclerModel.setService(res.getService());
+                        manifestListRecyclerModel.setWorkType(res.getWorkType());
+                        manifestListRecyclerModel.setFrom(res.getFrom());
+                        manifestListRecyclerModel.setTo(res.getTo());
                         list.add(manifestListRecyclerModel);
                     }
                     updateControls();

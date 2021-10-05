@@ -36,7 +36,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
-import nz.co.logicons.tlp.mobile.stobyapp.domain.model.MakeManifestItem;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.MakeManifestItemViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
@@ -93,7 +93,7 @@ public class InwardScanFragment extends Fragment {
     }
 
     private void observeAnyChange() {
-        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getMakeManifestItem().observe(
+        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getActionManifestItem().observe(
                 getViewLifecycleOwner(), makeManifestItemResult -> {
                     Log.d(Constants.TAG, "observeAnyChange: makeManifestItemResult " + makeManifestItemResult);
                     if (makeManifestItemResult instanceof Result.Error) {
@@ -102,9 +102,9 @@ public class InwardScanFragment extends Fragment {
                                 Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                         Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                     }else if (makeManifestItemResult instanceof Result.Success){
-                        MakeManifestItem makeManifestItem = (MakeManifestItem)
+                        ActionManifestItem actionManifestItem = (ActionManifestItem)
                                 ((Result.Success)makeManifestItemResult).getData();
-                        if (TextUtils.equals(makeManifestItem.getAction(), "InwardCompleted")){
+                        if (TextUtils.equals(actionManifestItem.getAction(), "InwardCompleted")){
                             Toast.makeText(getActivity(), Constants.INWARD_COMPLETED, Toast.LENGTH_SHORT).show();
                             toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
                         }
@@ -144,11 +144,11 @@ public class InwardScanFragment extends Fragment {
                         Log.d(Constants.TAG, "run: result.getText() " + result.getText());
                         String decodedBarcode = result.getText();
 //                        String decodedBarcode = "Item000014010001";
-                        MakeManifestItem makeManifestItem = new MakeManifestItem();
-                        makeManifestItem.setBarcode(decodedBarcode);
+                        ActionManifestItem actionManifestItem = new ActionManifestItem();
+                        actionManifestItem.setBarcode(decodedBarcode);
                         mCodeScanner.setScanMode(ScanMode.PREVIEW);
                         makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
-                                .completeInwardManifest(makeManifestItem, user);
+                                .completeInwardManifest(actionManifestItem, user);
                     }
                 });
             }

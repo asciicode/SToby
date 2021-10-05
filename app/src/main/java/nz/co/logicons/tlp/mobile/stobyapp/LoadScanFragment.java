@@ -43,7 +43,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
-import nz.co.logicons.tlp.mobile.stobyapp.domain.model.MakeManifestItem;
+import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.Manifest;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
@@ -122,10 +122,10 @@ public class LoadScanFragment extends Fragment {
         Button btn = view.findViewById(R.id.btnLoadComplete);
         btn.setOnClickListener(
                 temp -> {
-                    MakeManifestItem makeManifestItem = new MakeManifestItem();
-                    makeManifestItem.setManifestId(manifestId);
+                    ActionManifestItem actionManifestItem = new ActionManifestItem();
+                    actionManifestItem.setManifestId(manifestId);
                     makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
-                            .loadCompleteMakeManifestItem(makeManifestItem, user);
+                            .loadCompleteActionManifestItem(actionManifestItem, user);
                 }
         );
     }
@@ -157,7 +157,7 @@ public class LoadScanFragment extends Fragment {
                     handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 });
         // load complete observer
-        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getMakeManifestItem().observe(
+        makeManifestItemViewModel.getRetroMakeApiManifestItemClient().getActionManifestItem().observe(
                 getViewLifecycleOwner(), makeManifestItemResult -> {
                     Log.d(Constants.TAG, "observeAnyChange: makeManifestItemResult " + makeManifestItemResult);
                     if (makeManifestItemResult instanceof Result.Error) {
@@ -166,9 +166,9 @@ public class LoadScanFragment extends Fragment {
                                 Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                         Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                     } else if (makeManifestItemResult instanceof Result.Success) {
-                        MakeManifestItem makeManifestItem = (MakeManifestItem)
+                        ActionManifestItem actionManifestItem = (ActionManifestItem)
                                 ((Result.Success) makeManifestItemResult).getData();
-                        if (TextUtils.equals(makeManifestItem.getAction(), "LoadCompleted")) {
+                        if (TextUtils.equals(actionManifestItem.getAction(), "LoadCompleted")) {
                             NavController navController = Navigation.findNavController(this.getView());
                             Bundle bundle = new Bundle();
                             bundle.putString("action", LOAD_COMPLETED);

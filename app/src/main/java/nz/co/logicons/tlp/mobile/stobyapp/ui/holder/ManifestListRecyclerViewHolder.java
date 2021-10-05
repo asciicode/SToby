@@ -15,24 +15,21 @@ import nz.co.logicons.tlp.mobile.stobyapp.ui.model.ManifestListRecyclerModel;
 
 public class ManifestListRecyclerViewHolder extends RecyclerView.ViewHolder{
     public TextView tvManifestId;
-    private TextView txtViewInwardsDocket;
-    private TextView txtViewInwardCustomer;
-    private TextView txtViewInwardWarehouse;
-    private TextView txtViewInwardLocation;
-    private TextView txtViewInwardProduct;
-    private TextView txtViewInwardQuantity;
-    private LinearLayout layoutRecyclerInwards;
+    public TextView tvService;
+    public TextView tvWorkType;
+    public TextView tvDriver;
+    public TextView tvFrom;
+    public TextView tvTo;
+    public LinearLayout layoutRecyclerInwards;
     public ImageView imageView;
 
     public ManifestListRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
         this.tvManifestId = itemView.findViewById(R.id.tvManifestId);
-//        this.txtViewInwardsDocket = itemView.findViewById(R.id.txtview_inwarddocket_value);
-//        this.txtViewInwardCustomer = itemView.findViewById(R.id.txtview_inwardcustomer_value);
-//        this.txtViewInwardWarehouse = itemView.findViewById(R.id.txtview_inwardwarehouse_value);
-//        this.txtViewInwardLocation = itemView.findViewById(R.id.txtview_inwardlocation_value);
-//        this.txtViewInwardProduct = itemView.findViewById(R.id.txtview_inwardproduct_value);
-//        this.txtViewInwardQuantity = itemView.findViewById(R.id.txtview_inwardquantity_value);
+        this.tvService = itemView.findViewById(R.id.tvService);
+        this.tvWorkType = itemView.findViewById(R.id.tvWorkType);
+        this.tvFrom = itemView.findViewById(R.id.tvFrom);
+        this.tvTo = itemView.findViewById(R.id.tvTo);
 //        this.layoutRecyclerInwards = itemView.findViewById(R.id.layout_recycler_inwards_border);
         this.imageView = itemView.findViewById(R.id.imageIndicator);
     }
