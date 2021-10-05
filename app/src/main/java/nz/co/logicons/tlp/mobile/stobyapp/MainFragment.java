@@ -21,12 +21,14 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.Loading;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.adapter.TabsPagerAdapter;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.IgnoreBackPressedListener;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.OnBackPressedListener;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
 import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
 
 @AndroidEntryPoint
-public class MainFragment extends Fragment {
+            public class MainFragment extends Fragment implements OnBackPressedListener {
     @Inject
     ConnectivityManager connectivityManager;
     @Inject
@@ -69,6 +71,9 @@ public class MainFragment extends Fragment {
         pagerAdapter.addFragment(new AvailableDashboardFragment(), "Available");
         ViewPager viewPager = rootView.findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(new IgnoreBackPressedListener(getActivity()));
+
         return rootView;
     }
 
@@ -189,6 +194,7 @@ public class MainFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d(Constants.TAG, "onPause: ");
+        ((MainActivity)getActivity()).setOnBackPressedListener(null);
     }
 
     @Override
@@ -207,5 +213,10 @@ public class MainFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d(Constants.TAG, "onDetach: ");
+    }
+
+    @Override
+    public void doBack() {
+
     }
 }

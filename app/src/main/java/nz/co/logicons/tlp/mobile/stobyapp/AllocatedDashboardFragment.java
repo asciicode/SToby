@@ -77,7 +77,7 @@ public class AllocatedDashboardFragment extends Fragment implements DashboardBut
             bundle.putBoolean("storeLoad", true);
             navController.navigate(R.id.action_mainFragment_to_manifestListFragment, bundle);
         } else  if (TextUtils.equals(model.getImgText(), "Inward")){
-//            navController.navigate(R.id.action_mainFragment_to_loadMenuFragment);
+            navController.navigate(R.id.action_mainFragment_to_inwardScanFragment);
         }
 
     }

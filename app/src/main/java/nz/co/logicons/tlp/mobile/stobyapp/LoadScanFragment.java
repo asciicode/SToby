@@ -213,6 +213,7 @@ public class LoadScanFragment extends Fragment {
         mCodeScanner.setAutoFocusMode(AutoFocusMode.SAFE);
         mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
         mCodeScanner.setFlashEnabled(false);
+        mCodeScanner.setAutoFocusInterval(2000L);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final com.google.zxing.Result result) {

@@ -1,6 +1,7 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -18,12 +19,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.OnBackPressedListener;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ColorUtil;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SharedPreferences.Editor editor;
     private ActionBarDrawerToggle drawerToggle;
+    protected OnBackPressedListener onBackPressedListener;
 
     @Override
     protected void onStart() {
@@ -58,17 +63,53 @@ public class MainActivity extends AppCompatActivity {
 
         retrieveCustomAppBar(this, getSupportActionBar(), false, "");
 
-        Log.d(Constants.TAG, "onCreate: "+sharedPreferences);
+        Log.d(Constants.TAG, "onCreate: " + sharedPreferences);
 
         String baseUrl = sharedPreferences.getString(PreferenceKeys.BASE_URL, "").toString();
-        if (TextUtils.isEmpty(baseUrl)){
+        if (TextUtils.isEmpty(baseUrl)) {
             editor.putString(PreferenceKeys.BASE_URL, "http://192.168.1.114:8080");
             editor.apply();
         }
-        Log.d(Constants.TAG, "onCreate: end ");
+        NavigationView navigationView = this.findViewById(R.id.navigationview_main);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.navigation_profile)
+                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+            else if (item.getItemId() == R.id.navigation_settings)
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+            else if (item.getItemId() == R.id.navigation_logout) {
+                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.fragmentContainerView);
+                DrawerLayout drawer = findViewById(R.id.fragment_main);
+//                Log.d(Constants.TAG, "onCreate: nhf2 "+ navHostFragment.getNavController());
+                if (drawer.isDrawerOpen(GravityCompat.END))
+                    drawer.closeDrawer(GravityCompat.END);
+                NavController navController = navHostFragment.getNavController();
+                navController.popBackStack(R.id.loginFragment, true);
+                navController.navigate(R.id.loginFragment);
+            }
+            return true;
+        });
+        TextView navTextHeader = navigationView.getHeaderView(0).findViewById(R.id.navigation_welcome);
+        navTextHeader.setText(String.format("Welcome %s!", sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString()));
     }
-    public void retrieveCustomAppBar(Activity activity, ActionBar actionBar, Boolean isShowMenu, String title)
-    {
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(Constants.TAG, "onBackPressed: " + onBackPressedListener);
+
+        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment_main);
+        Log.d(Constants.TAG, "onBackPressed: " + f);
+        if (onBackPressedListener != null)
+            onBackPressedListener.doBack();
+        else
+            super.onBackPressed();
+    }
+
+    public void retrieveCustomAppBar(Activity activity, ActionBar actionBar, Boolean isShowMenu, String title) {
         if (actionBar != null) {
             ColorDrawable colorDrawable = new ColorDrawable(ColorUtil.getColorIntFromStyle(activity, R.attr.colorPrimaryDark));
             actionBar.setBackgroundDrawable(colorDrawable);
@@ -81,34 +122,19 @@ public class MainActivity extends AppCompatActivity {
             TextView appBarText = activity.findViewById(R.id.text_app_bar_title);
             appBarText.setText(title);
             ImageButton menuButton = activity.findViewById(R.id.btnMenu);
-                DrawerLayout drawer = activity.findViewById(R.id.fragment_main);
-            Log.d(Constants.TAG, "retrieveCustomAppBar: drawer in main activity "+drawer);
-                if (drawer != null) {
-                    menuButton.setOnClickListener(
-                            view -> {
-                                Log.d(Constants.TAG, "retrieveCustomAppBar: menu buton click");
-                                if (drawer.isDrawerOpen(GravityCompat.END))
-                                    drawer.closeDrawer(GravityCompat.END);
-                                else
-                                    drawer.openDrawer(GravityCompat.END);
-                            }
-                    );
-                }
-
-            NavigationView navigationView = activity.findViewById(R.id.navigationview_main);
-            navigationView.setNavigationItemSelectedListener(item -> {
-                if (item.getItemId() == R.id.navigation_profile)
-                    Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
-                else if (item.getItemId() == R.id.navigation_settings)
-                    Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                else if (item.getItemId() == R.id.navigation_logout){
-
-                }
-                return true;
-            });
-
-            TextView navTextHeader = navigationView.getHeaderView(0).findViewById(R.id.navigation_welcome);
-            navTextHeader.setText(String.format("Welcome %s!", sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString()));
+            DrawerLayout drawer = activity.findViewById(R.id.fragment_main);
+            Log.d(Constants.TAG, "retrieveCustomAppBar: drawer in main activity " + drawer);
+            if (drawer != null) {
+                menuButton.setOnClickListener(
+                        view -> {
+                            Log.d(Constants.TAG, "retrieveCustomAppBar: menu buton click");
+                            if (drawer.isDrawerOpen(GravityCompat.END))
+                                drawer.closeDrawer(GravityCompat.END);
+                            else
+                                drawer.openDrawer(GravityCompat.END);
+                        }
+                );
+            }
         }
     }
 }

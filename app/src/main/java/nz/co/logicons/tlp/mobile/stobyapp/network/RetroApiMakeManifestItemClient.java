@@ -65,6 +65,11 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
         return retroApiService.loadCompleteMakeManifestItem(makeManifestItem, username, password);
     }
 
+    private Call<MakeManifestItemDto> completeInwardManifest(MakeManifestItem makeManifestItem,
+            String username, String password) {
+        return retroApiService.completeInwardManifest(makeManifestItem, username, password);
+    }
+
     private Call<MakeManifestItemDto> checkMakeManifestItem(MakeManifestItem makeManifestItem,
             String username, String password) {
         return retroApiService.checkMakeManifestItem(makeManifestItem, username, password);
@@ -78,6 +83,51 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
     private Call<List<ManifestItemDto>> getAllocatedManifestItems(Manifest manifest,
             String username, String password) {
         return retroApiService.getAllocatedManifestItems(manifest, username, password);
+    }
+
+    private CompleteInwardManifestRunnable completeInwardManifestRunnable;
+
+    public void completeInwardManifest(MakeManifestItem makeManifestItem, User user) {
+        initRetroApi(sharedPreferences);
+        if (checkMakeManifestItemRunnable != null) {
+            checkMakeManifestItemRunnable = null;
+        }
+        completeInwardManifestRunnable = new CompleteInwardManifestRunnable(makeManifestItem, user);
+        AppExecutors.getInstance().networkIO().execute(completeInwardManifestRunnable);
+    }
+
+    private class CompleteInwardManifestRunnable implements Runnable {
+        private User user;
+        private MakeManifestItem makeManifestItem;
+
+        public CompleteInwardManifestRunnable(MakeManifestItem makeManifestItem, User user) {
+            this.user = user;
+            this.makeManifestItem = makeManifestItem;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Response response = completeInwardManifest(makeManifestItem,
+                        user.getUsername(), user.getPassword()).execute();
+                if (response.isSuccessful()) {
+                    Log.d(Constants.TAG, "RetroApiMakeManifestItemClient : " + response.body());
+                    MakeManifestItemDto makeManifestItemDto = (MakeManifestItemDto) response.body();
+                    resultMakeManifestItem.postValue(new Result.Success<>(
+                            makeManifestItemDtoMapper.mapToDomainModel(makeManifestItemDto)));
+                } else if (response.errorBody() != null) {
+                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                    String errMsg = (String) jObjError.get("message");
+                    Log.v(Constants.TAG, "Error " + response.errorBody());
+                    Exception exception = TextUtils.isEmpty(errMsg) ? null
+                            : new Exception(errMsg);
+                    resultMakeManifestItem.postValue(new Result.Error(exception));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                resultMakeManifestItem.postValue(new Result.Error(e));
+            }
+        }
     }
 
     private RemoveMakeManifestItemRunnable removeMakeManifestItemRunnable;

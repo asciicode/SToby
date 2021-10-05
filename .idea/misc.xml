@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/layout/fragment_allocated_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_available_dashboard.xml" value="0.11354166666666667" />
         <entry key="app/src/main/res/layout/fragment_avaliable_dashboard.xml" value="0.10052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_inward_scan.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/fragment_load_list.xml" value="0.12239583333333333" />
         <entry key="app/src/main/res/layout/fragment_load_menu.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/fragment_load_scan.xml" value="0.25" />

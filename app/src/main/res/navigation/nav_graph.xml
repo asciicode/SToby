@@ -17,6 +17,16 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_mainFragment_to_inwardScanFragment"
+            app:destination="@id/inwardScanFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loadMenuFragment"
@@ -136,4 +146,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
     </fragment>
+    <fragment
+        android:id="@+id/inwardScanFragment"
+        android:name="nz.co.logicons.tlp.mobile.stobyapp.InwardScanFragment"
+        android:label="fragment_inward_scan"
+        tools:layout="@layout/fragment_inward_scan" />
 </navigation>

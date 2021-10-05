@@ -50,4 +50,9 @@ public interface RetroApiService {
     Call<MakeManifestItemDto> loadCompleteMakeManifestItem(@Body MakeManifestItem makeManifestItem,
             @Query("username") String username,
             @Query("password") String password);
+
+    @POST("/transport/actions/stoby/complete-inward-manifest")
+    Call<MakeManifestItemDto> completeInwardManifest(@Body MakeManifestItem makeManifestItem,
+            @Query("username") String username,
+            @Query("password") String password);
 }
