@@ -131,8 +131,8 @@ public class LoginFragment extends Fragment {
         editor.putString(PreferenceKeys.USERNAME, username);
         editor.putString(PreferenceKeys.PASSWORD, password);
         editor.apply();
-
-        User user = new User(username, password);
+        String fcmToken = sharedPreferences.getString(PreferenceKeys.FCM_TOKEN, "").toString();
+        User user = new User(username, password, fcmToken);
         // online as of now
         if (connectivityManager.isNetworkAvailable){
 //            loading.start();

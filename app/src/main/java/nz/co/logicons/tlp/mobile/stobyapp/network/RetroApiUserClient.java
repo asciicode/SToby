@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import nz.co.logicons.tlp.mobile.stobyapp.AppExecutors;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.UserDao;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.UserEntity;
@@ -40,7 +42,7 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
     public LiveData<Result<User>> getUserData(){
         return userData;
     }
-
+    public RetroApiUserClient(){}
     public RetroApiUserClient(SharedPreferences sharedPreferences, UserDtoMapper userDtoMapper,
             UserDao userDao, UserEntityMapper userEntityMapper) {
         this.sharedPreferences = sharedPreferences;
@@ -57,7 +59,22 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
         if (userEntity == null) return null;
         return userEntityMapper.mapToDomainModel(userDao.getUserEntity(user.getUsername()));
     }
-
+    public void saveFcmToken(User user){
+        if (user.getUsername().isEmpty()){
+            Log.d(Constants.TAG, "saveFcmToken: empty username ");
+            return;
+        }
+        initRetroApi(sharedPreferences);
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            try {
+                retroApiService.saveFcmToken(user.getFcmToken(),
+                        user.getUsername(),
+                        user.getPassword()).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
     private LoginUserRunnable loginUserRunnable;
     public void checkUser(boolean isNetworkAvailable, User user){
         Log.d(Constants.TAG, "execute: "+

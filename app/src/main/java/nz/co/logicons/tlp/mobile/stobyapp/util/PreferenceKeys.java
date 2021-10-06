@@ -8,4 +8,5 @@ public class PreferenceKeys {
     public static final String BASE_URL = STOBY_PREFERENCES + ".BASE_URL";
     public static final String USERNAME = STOBY_PREFERENCES + ".USERNAME";
     public static final String PASSWORD = STOBY_PREFERENCES + ".PASSWORD";
+    public static final String FCM_TOKEN = STOBY_PREFERENCES + ".FCM_TOKEN";
 }

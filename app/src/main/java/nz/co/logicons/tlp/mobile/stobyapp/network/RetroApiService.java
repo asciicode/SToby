@@ -50,4 +50,9 @@ public interface RetroApiService {
     Call<ActionManifestItemDto> completeInwardManifest(@Body ActionManifestItem actionManifestItem,
             @Query("username") String username,
             @Query("password") String password);
+
+    @POST("/transport/actions/stoby/save-fcm-token")
+    Call<Void> saveFcmToken(@Query("fcmToken") String fcmToken,
+            @Query("username") String username,
+            @Query("password") String password);
 }

@@ -9,11 +9,11 @@ import nz.co.logicons.tlp.mobile.stobyapp.domain.util.DomainMapper;
 public class UserDtoMapper implements DomainMapper<UserDto, User> {
     @Override
     public User mapToDomainModel(UserDto model) {
-        return new User(model.getUsername(), model.getPassword());
+        return new User(model.getUsername(), model.getPassword(), model.getFcmToken());
     }
 
     @Override
     public UserDto mapFromDomainModel(User user) {
-        return new UserDto(user.getUsername(), user.getPassword());
+        return new UserDto(user.getUsername(), user.getPassword(), user.getFcmToken());
     }
 }
