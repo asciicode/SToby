@@ -61,17 +61,22 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
     }
     public void saveFcmToken(User user){
         if (user.getUsername().isEmpty()){
-            Log.d(Constants.TAG, "saveFcmToken: empty username ");
+            Log.d(Constants.TAG, "saveFcmToken: username empty");
             return;
         }
-        initRetroApi(sharedPreferences);
+        // usually happens when not using dagger injection
+//        if (sharedPreferences == null){
+//            Log.d(Constants.TAG, "saveFcmToken: sharedPreferences empty");
+//            return;
+//        }
+
         AppExecutors.getInstance().networkIO().execute(() -> {
             try {
                 retroApiService.saveFcmToken(user.getFcmToken(),
                         user.getUsername(),
                         user.getPassword()).execute();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "saveFcmToken: " + e.getMessage());
             }
         });
     }
@@ -145,7 +150,7 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
 //                }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
 //                userData.postValue(new DataState("error"));
                 userData.postValue(new Result.Error(e));
             }

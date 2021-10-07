@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "406964974897",
+    "project_id": "stoby-4d375",
+    "storage_bucket": "stoby-4d375.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406964974897:android:57f80f200c7857a9856c10",
+        "android_client_info": {
+          "package_name": "nz.co.logicons.tlp.mobile.stobyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406964974897-k70lvn66uki17rhnm8olri2p9lipqmv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD7p3eKf-w4qSbkBOr3ZVcakw47EK45UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406964974897-k70lvn66uki17rhnm8olri2p9lipqmv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

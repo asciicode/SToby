@@ -115,7 +115,7 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 manifestItem.postValue(new Result.Error(e));
             }
         }
@@ -158,7 +158,7 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
                     manifestItems.postValue(new Result.Error(new Exception(response.errorBody().string())));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 manifestItems.postValue(new Result.Error(e));
             }
         }
@@ -219,7 +219,7 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 manifestItems.postValue(new Result.Error(e));
             }
         }

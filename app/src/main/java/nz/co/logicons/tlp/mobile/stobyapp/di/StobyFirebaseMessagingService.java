@@ -38,15 +38,14 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
     @Inject
     SharedPreferences sharedPreferences;
 
-
     public StobyFirebaseMessagingService(){
-        Log.d(Constants.TAG, "StobyFirebaseMessagingService: " );
+        Log.d(Constants.TAG, "StobyFirebaseMessagingService: " + this.hashCode());
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
+//        Log.d(Constants.TAG, "onMessageReceived: " +retroApiUserClient2);
 //        DaggerServiceComponent
         if (remoteMessage.getData().size() > 0) {
             Log.d(Constants.TAG, "Message data payload: " + remoteMessage.getData());
@@ -54,7 +53,7 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
                     remoteMessage.getData().get("message"));
 
         } else if (remoteMessage.getNotification() != null) {
-            Log.d(Constants.TAG, "Message notifications payload: " + remoteMessage.getNotification().getBody());
+            Log.d(Constants.TAG, "Message notifications payload: " + remoteMessage.getNotification());
             showNotification(remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody());
         }
@@ -62,10 +61,8 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onCreate() {
-//        retroApiUserClient = sc.getRetroApiUserClient();
-//        AndroidInjection.inject(this);
         super.onCreate();
-//        InteractorModule_ProvideRetroApiUserClientFactory.
+        Log.d(Constants.TAG, "FCM onCreate: ");
 
     }
 
@@ -89,6 +86,7 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
         User user = new User(username, password, fcmToken);
 
         RetroApiUserClient retroApiUserClient = new RetroApiUserClient();
+        retroApiUserClient.reinitRetroApi(sharedPreferences);
         retroApiUserClient.saveFcmToken(user);
     }
 

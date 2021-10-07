@@ -25,6 +25,10 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -48,6 +52,7 @@ public class LoginFragment extends Fragment {
     private EditText usernameEditText, passwordEditText;
     private AccessViewModel accessViewModel;
     private Loading loading;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -78,25 +83,45 @@ public class LoginFragment extends Fragment {
         accessViewModel.getRetroApiUserClient().getUserData().observe(getViewLifecycleOwner(), new Observer<Result<User>>() {
             @Override
             public void onChanged(Result<User> result) {
-                Log.d(Constants.TAG, "onChanged: "+result);
+                Log.d(Constants.TAG, "onChanged: " + result);
 
-                if (result instanceof Result.Success){
+                if (result instanceof Result.Success) {
                     User user = ((Result.Success<User>) result).getData();
 //                    loading.dismiss();
                     NavController navController = Navigation.findNavController(view);
                     navController.navigate(R.id.action_loginFragment_to_mainFragment);
-                }else if (result instanceof Result.Error) {
+                } else if (result instanceof Result.Error) {
                     String str = ((Result.Error) result).getError() == null ?
                             Constants.SERVER_ERROR : ((Result.Error) result).getError().getMessage();
                     Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
 //                    loading.dismiss();
-                }else if (result instanceof  Result.Loading){
+                } else if (result instanceof Result.Loading) {
 //                    loading.start();
                 }
             }
         });
+        // can't make it work
+        // only happen when running fresh install stoby e.g. wipe data
+        // call get token in two places
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(Constants.TAG, "LoginFragment onViewCreated " +
+                                    "FCM registration token failed", task.getException());
+                            return;
+                        }
+                        Log.d(Constants.TAG, "LoginFragment FCM onComplete: " + task.isSuccessful());
+                        // saving token not needed here see FirebaseMessagingService
+                        // Get new FCM registration token
+//                        String token = task.getResult();
+//                        saveFcmToken(token);
+                    }
+                });
 
     }
+
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 //if (result.getResultCode() == Activity.RESULT_OK) {
@@ -104,6 +129,7 @@ public class LoginFragment extends Fragment {
                 // Handle the Intent
                 //}
             });
+
     private void setupSettingsButton(@NonNull View view) {
         ImageButton btn = view.findViewById(R.id.btnLoginSetting);
         btn.setOnClickListener(
@@ -125,7 +151,7 @@ public class LoginFragment extends Fragment {
         );
     }
 
-    private void signIn(){
+    private void signIn() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
         editor.putString(PreferenceKeys.USERNAME, username);
@@ -134,11 +160,11 @@ public class LoginFragment extends Fragment {
         String fcmToken = sharedPreferences.getString(PreferenceKeys.FCM_TOKEN, "").toString();
         User user = new User(username, password, fcmToken);
         // online as of now
-        if (connectivityManager.isNetworkAvailable){
+        if (connectivityManager.isNetworkAvailable) {
 //            loading.start();
             accessViewModel.getRetroApiUserClient().reinitRetroApi(sharedPreferences);
             accessViewModel.getRetroApiUserClient().checkUser(connectivityManager.isNetworkAvailable, user);
-        }else{
+        } else {
             Toast.makeText(getContext(), Constants.NO_INET_CONNECTION, Toast.LENGTH_LONG).show();
         }
 

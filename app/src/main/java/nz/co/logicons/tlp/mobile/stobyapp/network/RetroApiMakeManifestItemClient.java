@@ -124,7 +124,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
@@ -169,7 +169,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
@@ -214,7 +214,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
@@ -261,7 +261,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     resultActionManifestItem.postValue(new Result.Error(exception));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 resultActionManifestItem.postValue(new Result.Error(e));
             }
         }
@@ -311,7 +311,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 manifestItems.postValue(new Result.Error(e));
             }
         }

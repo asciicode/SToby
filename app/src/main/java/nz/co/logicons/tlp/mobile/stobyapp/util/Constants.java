@@ -15,7 +15,4 @@ public class Constants {
     public static final String LIST_ITEMS = "List";
     public static final String SCAN_ITEMS = "Scan";
 
-    public static final String FCM_KEY = "AAAAgtrGOQA:APA91bE-hd8LQYlp2I_kj8kr3lbYI6QQn4jTSFRNzxCw-nsbOs9qix_VQZg0bG2P6kGQE0LoluO2hhj6aZn5Xd5gnvV4TQb2g6WTtzMDqoBf6LLv0eKu2lxjheNvwhPWdPoWIbnkF0Px";
-    public static final String FCM_URL = "https://fcm.googleapis.com";
-
 }

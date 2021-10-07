@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,25 +16,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.OnBackPressedListener;
-import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.AccessViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ColorUtil;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
-import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
 import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
 
 @AndroidEntryPoint
@@ -46,15 +37,13 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     @Inject
     SharedPreferences.Editor editor;
-    private AccessViewModel accessViewModel;
-
-//    private ActionBarDrawerToggle drawerToggle;
     protected OnBackPressedListener onBackPressedListener;
 
     @Override
     protected void onStart() {
         super.onStart();
         connectivityManager.registerConnectionObserver(this);
+
     }
 
     @Override
@@ -98,32 +87,6 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView navTextHeader = navigationView.getHeaderView(0).findViewById(R.id.navigation_welcome);
         navTextHeader.setText(String.format("Welcome %s!", sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString()));
-        Activity me = this;
-        FirebaseInstanceId.getInstance().getInstanceId(). addOnSuccessListener(this,
-                new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        Log.d(Constants.TAG, "onSuccess: " + instanceIdResult.getToken());
-                        editor.putString(PreferenceKeys.FCM_TOKEN, instanceIdResult.getToken());
-                        editor.apply();
-
-                        String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
-                        String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
-                        String fcmToken = sharedPreferences.getString(PreferenceKeys.FCM_TOKEN, "").toString();
-                        User user = new User(username, password, fcmToken);
-                        accessViewModel = new ViewModelProvider((ViewModelStoreOwner) me).get(AccessViewModel.class);
-                        accessViewModel.getRetroApiUserClient().saveFcmToken(user);
-                    }
-                });
-
-//        FirebaseMessaging.getInstance().subscribeToTopic("SToby")
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//
-//                        Toast.makeText(MainActivity.this, "STobyyy... ", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
     }
 
     public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
@@ -152,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
             appBarText.setText(title);
             ImageButton menuButton = activity.findViewById(R.id.btnMenu);
             DrawerLayout drawer = activity.findViewById(R.id.fragment_main);
-            Log.d(Constants.TAG, "retrieveCustomAppBar: drawer in main activity " + drawer);
+//            Log.d(Constants.TAG, "retrieveCustomAppBar: drawer in main activity " + drawer);
             if (drawer != null) {
                 menuButton.setOnClickListener(
                         view -> {
-                            Log.d(Constants.TAG, "retrieveCustomAppBar: menu buton click");
+//                            Log.d(Constants.TAG, "retrieveCustomAppBar: menu buton click");
                             if (drawer.isDrawerOpen(GravityCompat.END))
                                 drawer.closeDrawer(GravityCompat.END);
                             else

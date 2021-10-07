@@ -94,7 +94,7 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
                 manifests.postValue(new Result.Error(e));
             }
         }

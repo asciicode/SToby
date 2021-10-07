@@ -16,6 +16,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -28,7 +32,7 @@ import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
 import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
 
 @AndroidEntryPoint
-            public class MainFragment extends Fragment implements OnBackPressedListener {
+public class MainFragment extends Fragment implements OnBackPressedListener {
     @Inject
     ConnectivityManager connectivityManager;
     @Inject
@@ -51,7 +55,26 @@ import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
                 Toast.makeText(getActivity(), action, Toast.LENGTH_SHORT).show();
             }
         }
-       Log.d(Constants.TAG, "onCreate: Main Frag");
+        Log.d(Constants.TAG, "onCreate: Main Frag");
+
+        // can't make it work
+        // only happen when running fresh install stoby e.g. wipe data
+        // call get token in two places
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(Constants.TAG, "MainFragment onCreate FCM registration token failed", task.getException());
+                            return;
+                        }
+                        Log.d(Constants.TAG, "MainFragment FCM onComplete: " + task.isSuccessful());
+                        // saving token not needed here see FirebaseMessagingService
+                        // Get new FCM registration token
+//                        String token = task.getResult();
+//                        saveFcmToken(token);
+                    }
+                });
     }
 
 //    @Override
@@ -72,7 +95,7 @@ import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
         ViewPager viewPager = rootView.findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
 
-        ((MainActivity)getActivity()).setOnBackPressedListener(new IgnoreBackPressedListener(getActivity()));
+        ((MainActivity) getActivity()).setOnBackPressedListener(new IgnoreBackPressedListener(getActivity()));
 
         return rootView;
     }
@@ -87,31 +110,32 @@ import nz.co.logicons.tlp.mobile.stobyapp.util.PreferenceKeys;
 
         Log.d(Constants.TAG,
                 "MainFrag onViewCreated: " + sharedPreferences.getString(PreferenceKeys.BASE_URL, ""));
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(Constants.TAG, "onPause: ");
-        ((MainActivity)getActivity()).setOnBackPressedListener(null);
+//        Log.d(Constants.TAG, "onPause: ");
+        ((MainActivity) getActivity()).setOnBackPressedListener(null);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(Constants.TAG, "onStop: ");
+//        Log.d(Constants.TAG, "onStop: ");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(Constants.TAG, "onDestroy: ");
+//        Log.d(Constants.TAG, "onDestroy: ");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(Constants.TAG, "onDetach: ");
+//        Log.d(Constants.TAG, "onDetach: ");
     }
 
     @Override
