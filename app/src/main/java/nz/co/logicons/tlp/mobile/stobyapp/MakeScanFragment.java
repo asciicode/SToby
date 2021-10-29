@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.User;
+import nz.co.logicons.tlp.mobile.stobyapp.ui.Loading;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.viewmodel.MakeManifestItemViewModel;
 import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
@@ -68,6 +71,7 @@ public class MakeScanFragment extends Fragment {
     private TextView tvTitle;
     private TextView tvScan;
     private ActionManifestItem currentActionManifestItem;
+    private Loading loading;
 
     public MakeScanFragment() {
         // Required empty public constructor
@@ -76,6 +80,7 @@ public class MakeScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loading = new Loading(getActivity());
         manifestId = getArguments().getString("manifestId");
         Log.d(Constants.TAG, "onCreate: manifestId pass " + getArguments());
         setupPermission();
@@ -84,12 +89,14 @@ public class MakeScanFragment extends Fragment {
         View view = getLayoutInflater().inflate(R.layout.dialog_remove_layout, null);
         dialog.setContentView(view);
         dialog.findViewById(R.id.btnYes).setOnClickListener(view1 -> {
+            dialog.hide();
             if (connectivityManager.isNetworkAvailable) {
                 makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
                         .removeMakeManifestItem(currentActionManifestItem, user);
             } else {
                 Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
             }
+            mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
         });
 
         dialog.findViewById(R.id.btnNo).setOnClickListener(view1 -> {
@@ -117,7 +124,7 @@ public class MakeScanFragment extends Fragment {
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         user = new User(username, password);
         tvTitle = view.findViewById(R.id.tvTitle);
-        tvTitle.setText(String.format("Load Manifest %s ", manifestId));
+        tvTitle.setText(String.format("Make Manifest %s ", manifestId));
         tvScan = view.findViewById(R.id.tvScan);
         YoYo.with(Techniques.SlideInLeft).duration(1000)
                 .repeat(Animation.INFINITE).playOn(tvScan);
@@ -148,13 +155,19 @@ public class MakeScanFragment extends Fragment {
                 String str = ((Result.Error) makeManifestItemResult).getError() == null ?
                         Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                 Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                loading.dismiss();
             }else if (makeManifestItemResult instanceof Result.Success){
                 ActionManifestItem actionManifestItem = (ActionManifestItem)
                         ((Result.Success)makeManifestItemResult).getData();
                 if (TextUtils.equals(actionManifestItem.getAction(), "ItemAdded")){
                     Toast.makeText(getActivity(), Constants.ITEM_LOADED, Toast.LENGTH_SHORT).show();
                     toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
+                    // adding delay to scanner decoding
+                    Handler handler = new Handler();
+                    handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 }else if (TextUtils.equals(actionManifestItem.getAction(), "ItemRemove")){
+                    // delay for loading purpose
+                    SystemClock.sleep(1000);
                     currentActionManifestItem = actionManifestItem;
                     dialog.show();
                     toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
@@ -178,6 +191,9 @@ public class MakeScanFragment extends Fragment {
                             .build();
                     navController.navigate(R.id.action_makeScanFragment_to_mainFragment, bundle, navOptions);
                 }
+                loading.dismiss();
+            } else if (makeManifestItemResult instanceof Result.Loading) {
+                loading.start();
             }
         });
     }
@@ -234,12 +250,12 @@ public class MakeScanFragment extends Fragment {
             }
         });
 
-//        scannerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCodeScanner.startPreview();
-//            }
-//        });
+        scannerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCodeScanner.startPreview();
+            }
+        });
     }
 
     @Override

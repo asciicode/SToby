@@ -105,13 +105,18 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
                                             manifestItemEntityMapper.mapToDomainModel(barcodeEntity)));
                             return;
                         }
-                    }
-                    ManifestItemEntity tempEntity = manifestItemEntities.stream()
-                            .filter(rec -> rec.isLoaded() == false).findFirst().orElse(null);
-                    if (tempEntity == null) {
-                        // all loaded
-                        manifestItem.postValue(new Result.Success<>(
-                                "All items loaded. Click Load Complete."));
+
+                        ManifestItemEntity tempEntity = manifestItemEntities.stream()
+                                .filter(rec -> rec.isLoaded() == false).findFirst().orElse(null);
+                        if (tempEntity == null) {
+                            // all loaded
+                            manifestItem.postValue(new Result.Success<>(
+                                    "All items loaded. Click Load Complete."));
+                        }else{
+                            manifestItem.postValue(
+                                    new Result.Success<>(
+                                            manifestItemEntityMapper.mapToDomainModel(barcodeEntity)));
+                        }
                     }
                 }
             } catch (Exception e) {

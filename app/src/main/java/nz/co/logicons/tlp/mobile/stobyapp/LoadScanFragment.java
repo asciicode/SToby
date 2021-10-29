@@ -134,7 +134,7 @@ public class LoadScanFragment extends Fragment {
         // per scan observer
         manifestItemViewModel.getRetroApiManifestItemClient().getManifestItem().observe(getViewLifecycleOwner(),
                 manifestItemResult -> {
-                    Log.d(Constants.TAG, "observeAnyChange:ManifestItem " + manifestItemResult);
+                    Log.d(Constants.TAG, "observeAnyChange: ManifestItem " + manifestItemResult);
                     if (manifestItemResult instanceof Result.Error) {
                         toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2, 1000);
                         String str = ((Result.Error) manifestItemResult).getError() == null ?
@@ -161,6 +161,7 @@ public class LoadScanFragment extends Fragment {
                 getViewLifecycleOwner(), makeManifestItemResult -> {
                     Log.d(Constants.TAG, "observeAnyChange: makeManifestItemResult " + makeManifestItemResult);
                     if (makeManifestItemResult instanceof Result.Error) {
+                        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
                         toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2, 1000);
                         String str = ((Result.Error) makeManifestItemResult).getError() == null ?
                                 Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
@@ -245,12 +246,12 @@ public class LoadScanFragment extends Fragment {
             }
         });
 
-//        scannerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCodeScanner.startPreview();
-//            }
-//        });
+        scannerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCodeScanner.startPreview();
+            }
+        });
     }
 
     @Override

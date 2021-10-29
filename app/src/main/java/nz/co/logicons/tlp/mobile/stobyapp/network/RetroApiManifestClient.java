@@ -78,7 +78,7 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
 
                     Response response = getAllocatedManifest(manifest,
                             user.getUsername(), user.getPassword()).execute();
-                    Log.d(Constants.TAG, "RetroApiManifestClient response : " + response);
+//                    Log.d(Constants.TAG, "RetroApiManifestClient response : " + response);
 
                     if (response.isSuccessful()) {
                         Log.d(Constants.TAG, "RetroApiManifestClient : " + response.body());

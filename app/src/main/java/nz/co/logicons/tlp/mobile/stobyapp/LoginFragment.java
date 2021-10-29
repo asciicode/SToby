@@ -100,25 +100,7 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-        // can't make it work
-        // only happen when running fresh install stoby e.g. wipe data
-        // call get token in two places
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(Constants.TAG, "LoginFragment onViewCreated " +
-                                    "FCM registration token failed", task.getException());
-                            return;
-                        }
-                        Log.d(Constants.TAG, "LoginFragment FCM onComplete: " + task.isSuccessful());
-                        // saving token not needed here see FirebaseMessagingService
-                        // Get new FCM registration token
-//                        String token = task.getResult();
-//                        saveFcmToken(token);
-                    }
-                });
+
 
     }
 
@@ -164,6 +146,26 @@ public class LoginFragment extends Fragment {
 //            loading.start();
             accessViewModel.getRetroApiUserClient().reinitRetroApi(sharedPreferences);
             accessViewModel.getRetroApiUserClient().checkUser(connectivityManager.isNetworkAvailable, user);
+
+            // can't make it work
+            // only happen when running fresh install stoby e.g. wipe data
+            // call get token in two places - this is expected to fail
+            FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(Constants.TAG, "LoginFragment onViewCreated " +
+                                    "FCM registration token failed", task.getException());
+                            return;
+                        }
+                        Log.d(Constants.TAG, "LoginFragment FCM onComplete: " + task.isSuccessful());
+                        // saving token not needed here see FirebaseMessagingService
+                        // Get new FCM registration token
+//                        String token = task.getResult();
+//                        saveFcmToken(token);
+                    }
+                });
         } else {
             Toast.makeText(getContext(), Constants.NO_INET_CONNECTION, Toast.LENGTH_LONG).show();
         }

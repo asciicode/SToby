@@ -22,6 +22,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +103,25 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
 
         // should be here after invoking web service
         observeAnyChange();
+
+        // can't make it work
+        // only happen when running fresh install stoby e.g. wipe data
+        // call get token in two places - this will work 2nd invoke
+        FirebaseMessaging.getInstance().getToken()
+            .addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        Log.w(Constants.TAG, "ManifestListFragment onCreateView FCM registration token failed", task.getException());
+                        return;
+                    }
+                    Log.d(Constants.TAG, "ManifestListFragment FCM onComplete: " + task.isSuccessful());
+                    // saving token not needed here see FirebaseMessagingService
+                    // Get new FCM registration token
+//                        String token = task.getResult();
+//                        saveFcmToken(token);
+                }
+            });
     }
 
     private void observeAnyChange() {

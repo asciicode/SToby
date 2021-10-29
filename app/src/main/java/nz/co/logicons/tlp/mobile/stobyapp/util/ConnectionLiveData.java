@@ -73,7 +73,7 @@ public class ConnectionLiveData extends LiveData<Boolean> {
 
             @Override
             public void onLost(@NonNull Network network) {
-                Log.d(Constants.TAG, "onLost: " + network);
+//                Log.d(Constants.TAG, "onLost: " + network);
                 validNetworks.remove(network);
                 checkValidNetworks();
             }

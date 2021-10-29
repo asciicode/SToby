@@ -58,7 +58,7 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             style="@style/LoginButton"
-            android:text="Load Complete" />
+            android:text="Make Complete" />
     </LinearLayout>
 
 

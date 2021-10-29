@@ -166,12 +166,12 @@ public class InwardScanFragment extends Fragment {
             }
         });
 
-//        scannerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCodeScanner.startPreview();
-//            }
-//        });
+        scannerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCodeScanner.startPreview();
+            }
+        });
     }
 
     @Override

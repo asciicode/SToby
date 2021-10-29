@@ -153,6 +153,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
         @Override
         public void run() {
             try {
+                resultActionManifestItem.postValue(new Result.Loading(true));
                 Response response = removeMakeManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {
@@ -198,6 +199,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
         @Override
         public void run() {
             try {
+                resultActionManifestItem.postValue(new Result.Loading(true));
                 Response response = checkMakeManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {

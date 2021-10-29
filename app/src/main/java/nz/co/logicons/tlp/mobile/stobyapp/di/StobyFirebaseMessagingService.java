@@ -44,7 +44,7 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
+//        super.onMessageReceived(remoteMessage);
 //        Log.d(Constants.TAG, "onMessageReceived: " +retroApiUserClient2);
 //        DaggerServiceComponent
         if (remoteMessage.getData().size() > 0) {
@@ -76,10 +76,10 @@ public class StobyFirebaseMessagingService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-        sendRegistrationToServer(token);
+        sendRegistrationToServer();
     }
 
-    private void sendRegistrationToServer(String token) {
+    private void sendRegistrationToServer() {
         String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         String fcmToken = sharedPreferences.getString(PreferenceKeys.FCM_TOKEN, "").toString();

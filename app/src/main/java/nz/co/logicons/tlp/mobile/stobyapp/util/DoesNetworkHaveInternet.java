@@ -15,7 +15,7 @@ public class DoesNetworkHaveInternet {
 
     static boolean execute(SocketFactory socketFactory){
         try{
-            Log.d(Constants.TAG, "PINGING google.");
+//            Log.d(Constants.TAG, "PINGING google.");
             Socket socket = socketFactory.createSocket();
             if (socket == null) {
                 throw new IOException("Socket is null.");
@@ -25,7 +25,7 @@ public class DoesNetworkHaveInternet {
             Log.d(Constants.TAG, "PING success.");
             return true;
         }catch(IOException io){
-            Log.e(Constants.TAG, "No internet connection. ", io);
+            Log.e(Constants.TAG, Constants.NO_INET_CONNECTION, io);
             return false;
         }
     }
