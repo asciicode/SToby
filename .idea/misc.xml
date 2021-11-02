@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/ic_arrow_forward.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/ic_baseline_gear_24.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.26197916666666665" />
+        <entry key="app/src/main/res/drawable/ic_outline_assignment_ind_24.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/round_shape_bg.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/layout/activity_login_setting.xml" value="0.12447916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2188679245283019" />
@@ -23,6 +24,7 @@
         <entry key="app/src/main/res/layout/dummy.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_allocated_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_available_dashboard.xml" value="0.11354166666666667" />
+        <entry key="app/src/main/res/layout/fragment_available_recycler_child.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/fragment_avaliable_dashboard.xml" value="0.10052083333333334" />
         <entry key="app/src/main/res/layout/fragment_inward_scan.xml" value="0.2328125" />
         <entry key="app/src/main/res/layout/fragment_load_list.xml" value="0.12239583333333333" />
@@ -38,6 +40,7 @@
         <entry key="app/src/main/res/layout/fragment_recycler_child.xml" value="0.3536458333333333" />
         <entry key="app/src/main/res/layout/loading.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/navigation_header.xml" value="0.12239583333333333" />
+        <entry key="app/src/main/res/layout/recycler_available_manifest_list.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/recycler_inwards.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/recycler_main.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/recycler_manifest__item_list.xml" value="0.19479166666666667" />

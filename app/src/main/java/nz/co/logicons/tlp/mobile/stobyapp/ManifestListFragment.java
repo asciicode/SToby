@@ -86,7 +86,6 @@ public class ManifestListFragment extends Fragment implements ManifestListListen
         initializeRecycler(view);
         initControls();
 
-
         String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
         String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
         User user = new User(username, password);

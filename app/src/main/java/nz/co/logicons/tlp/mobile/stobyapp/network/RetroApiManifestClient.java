@@ -45,9 +45,121 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
         this.manifestDao = manifestDao;
         this.manifestEntityMapper = manifestEntityMapper;
     }
+    private AssignPersonToManifestRunnable assignPersonToManifestRunnable;
+    public void assignPersonToManifest(boolean isNetworkAvailable, Manifest manifest, User user) {
+        initRetroApi(sharedPreferences);
+        if (assignPersonToManifestRunnable != null) {
+            assignPersonToManifestRunnable = null;
+        }
+        assignPersonToManifestRunnable = new AssignPersonToManifestRunnable(isNetworkAvailable, manifest, user);
+        AppExecutors.getInstance().networkIO().execute(assignPersonToManifestRunnable);
+    }
+    private class AssignPersonToManifestRunnable implements Runnable {
+        private boolean isNetworkAvailable;
+        private User user;
+        private Manifest manifest;
+
+        public AssignPersonToManifestRunnable(boolean isNetworkAvailable, Manifest manifest, User user) {
+            this.isNetworkAvailable = isNetworkAvailable;
+            this.user = user;
+            this.manifest = manifest;
+        }
+
+        @Override
+        public void run() {
+
+            try {
+                // TODO offline storage
+                if (isNetworkAvailable) {
+                    manifests.postValue(new Result.Loading(true));
+
+                    Response response = assignPersonToManifest(manifest,
+                            user.getUsername(), user.getPassword()).execute();
+//                    Log.d(Constants.TAG, "RetroApiManifestClient response : " + response);
+
+                    if (response.isSuccessful()) {
+                        Log.d(Constants.TAG, "RetroApiManifestClient : " + response.body());
+                        manifests.postValue(new Result.Success(
+                                manifestDtoMapper.toDomainList((List<ManifestDto>) response.body())));
+                    } else if (response.errorBody() != null){
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String errMsg = (String) jObjError.get("message");
+                        Log.v(Constants.TAG, "Error "+response.errorBody());
+                        Exception exception = TextUtils.isEmpty(errMsg) ? null
+                                : new Exception(errMsg);
+                        manifests.postValue(new Result.Error(exception));
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
+                manifests.postValue(new Result.Error(e));
+            }
+        }
+
+        private Call<List<ManifestDto>> assignPersonToManifest(Manifest manifest, String username, String password) {
+            return retroApiService.assignPersonToManifest(manifest, username, password);
+        }
+
+    }
+
+    private AvailableManifestRunnable availableManifestRunnable;
+    public void availableManifest(boolean isNetworkAvailable, Manifest manifest, User user) {
+        initRetroApi(sharedPreferences);
+        if (availableManifestRunnable != null) {
+            availableManifestRunnable = null;
+        }
+        availableManifestRunnable = new AvailableManifestRunnable(isNetworkAvailable, manifest, user);
+        AppExecutors.getInstance().networkIO().execute(availableManifestRunnable);
+    }
+    private class AvailableManifestRunnable implements Runnable {
+        private boolean isNetworkAvailable;
+        private User user;
+        private Manifest manifest;
+
+        public AvailableManifestRunnable(boolean isNetworkAvailable, Manifest manifest, User user) {
+            this.isNetworkAvailable = isNetworkAvailable;
+            this.user = user;
+            this.manifest = manifest;
+        }
+
+        @Override
+        public void run() {
+
+            try {
+                // TODO offline storage
+                if (isNetworkAvailable) {
+                    manifests.postValue(new Result.Loading(true));
+
+                    Response response = getAvailableManifest(manifest,
+                            user.getUsername(), user.getPassword()).execute();
+//                    Log.d(Constants.TAG, "RetroApiManifestClient response : " + response);
+
+                    if (response.isSuccessful()) {
+                        Log.d(Constants.TAG, "RetroApiManifestClient : " + response.body());
+                        manifests.postValue(new Result.Success(
+                                manifestDtoMapper.toDomainList((List<ManifestDto>) response.body())));
+                    } else if (response.errorBody() != null){
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String errMsg = (String) jObjError.get("message");
+                        Log.v(Constants.TAG, "Error "+response.errorBody());
+                        Exception exception = TextUtils.isEmpty(errMsg) ? null
+                                : new Exception(errMsg);
+                        manifests.postValue(new Result.Error(exception));
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Constants.TAG, "client runnable : " + e.getMessage());
+                manifests.postValue(new Result.Error(e));
+            }
+        }
+
+        private Call<List<ManifestDto>> getAvailableManifest(Manifest manifest, String username, String password) {
+            return retroApiService.getAvailableManifest(manifest, username, password);
+        }
+
+    }
 
     private AllocatedManifestRunnable allocatedManifestRunnable;
-
     public void allocatedManifest(boolean isNetworkAvailable, Manifest manifest, User user) {
         initRetroApi(sharedPreferences);
         if (allocatedManifestRunnable != null) {

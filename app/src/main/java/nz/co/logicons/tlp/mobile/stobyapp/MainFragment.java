@@ -52,25 +52,6 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
             }
         }
         Log.d(Constants.TAG, "onCreate: Main Frag");
-
-        // can't make it work
-        // only happen when running fresh install stoby e.g. wipe data
-        // call get token in two places
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(Constants.TAG, "MainFragment onCreate FCM registration token failed", task.getException());
-                            return;
-                        }
-                        Log.d(Constants.TAG, "MainFragment FCM onComplete: " + task.isSuccessful());
-                        // saving token not needed here see FirebaseMessagingService
-                        // Get new FCM registration token
-//                        String token = task.getResult();
-//                        saveFcmToken(token);
-                    }
-                });
     }
 
 //    @Override

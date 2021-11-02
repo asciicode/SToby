@@ -55,4 +55,14 @@ public interface RetroApiService {
     Call<Void> saveFcmToken(@Query("fcmToken") String fcmToken,
             @Query("username") String username,
             @Query("password") String password);
+
+    @POST("/transport/actions/stoby/available-manifest")
+    Call<List<ManifestDto>> getAvailableManifest(@Body Manifest manifest,
+            @Query("username") String username,
+            @Query("password") String password);
+
+    @POST("/transport/actions/stoby/assign-manifest")
+    Call<List<ManifestDto>> assignPersonToManifest(@Body Manifest manifest,
+            @Query("username") String username,
+            @Query("password") String password);
 }
