@@ -87,8 +87,6 @@ public class LoadMenuFragment extends Fragment implements DashboardButtonListene
         list = new ArrayList<>();
         list.add(new DashboardRecyclerModel(R.drawable.list_cargo, Constants.LIST_ITEMS, "#ffffff", 1, getActivity()));
         list.add(new DashboardRecyclerModel(R.drawable.barcode, Constants.SCAN_ITEMS, "#ffffff",2, getActivity()));
-//        list.add(new DashboardRecyclerModel(R.drawable.ic_inwards_white, "Inward", "#ffffff",3, getActivity()));
-//        list.add(new DashboardRecyclerModel(R.drawable.ic_stocktake_white, "STOCK TAKE", "#ffffff",4, getActivity()));
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_allocated_dashboard);
         adapter = new DashboardRecyclerViewAdapter(list, this);

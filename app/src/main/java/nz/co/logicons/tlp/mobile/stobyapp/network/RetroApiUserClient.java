@@ -28,17 +28,12 @@ import retrofit2.Response;
  * @author by Allen
  */
 public class RetroApiUserClient extends  AbstractRetroApiClient{
-//    private RetroApiService retroApiService;
     private UserDtoMapper userDtoMapper;
     private SharedPreferences sharedPreferences;
     private UserDao userDao;
     private UserEntityMapper userEntityMapper;
-//    private MutableLiveData<DataState<?>>  userData = new MutableLiveData<>();
     private MutableLiveData<Result<User>>  userData = new MutableLiveData<>();
 
-//    public LiveData<DataState<?>> getUserData(){
-//        return userData;
-//    }
     public LiveData<Result<User>> getUserData(){
         return userData;
     }
@@ -90,13 +85,6 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
         }
         loginUserRunnable = new LoginUserRunnable(isNetworkAvailable, user);
         AppExecutors.getInstance().networkIO().execute(loginUserRunnable);
-
-//        AppExecutors.getInstance().networkIO().schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//                myHandler.cancel(true);
-//            }
-//        }, 5000, TimeUnit.MILLISECONDS);
     }
 
     private class LoginUserRunnable implements Runnable {

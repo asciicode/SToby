@@ -54,7 +54,6 @@ public class AllocatedDashboardFragment extends Fragment implements DashboardBut
         list.add(new DashboardRecyclerModel(R.drawable.load_cargo, "Load", "#ffffff", 1, null));
         list.add(new DashboardRecyclerModel(R.drawable.cargo, "Make", "#ffffff",2, null));
         list.add(new DashboardRecyclerModel(R.drawable.delivery, "Inward", "#ffffff",3, null));
-//        list.add(new DashboardRecyclerModel(R.drawable.ic_stocktake_white, "STOCK TAKE", "#ffffff",4, getActivity()));
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_allocated_dashboard);
         adapter = new DashboardRecyclerViewAdapter(list, this);

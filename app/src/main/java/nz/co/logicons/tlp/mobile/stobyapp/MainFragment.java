@@ -54,12 +54,6 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         Log.d(Constants.TAG, "onCreate: Main Frag");
     }
 
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        Log.d(Constants.TAG, "onPrepareOptionsMenu: Main Frag");
-//        menu.clear();
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
