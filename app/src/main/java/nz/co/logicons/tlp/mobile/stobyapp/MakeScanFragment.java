@@ -225,8 +225,8 @@ public class MakeScanFragment extends Fragment {
                     @Override
                     public void run() {
                         Log.d(Constants.TAG, "run: result.getText() " + result.getText());
-//                        String decodedBarcode = result.getText();
-                        String decodedBarcode = "Item000014010001";
+                        String decodedBarcode = result.getText();
+//                        String decodedBarcode = "Item000014010001";
                         ActionManifestItem actionManifestItem = new ActionManifestItem();
                         actionManifestItem.setBarcode(decodedBarcode);
                         actionManifestItem.setManifestId(manifestId);

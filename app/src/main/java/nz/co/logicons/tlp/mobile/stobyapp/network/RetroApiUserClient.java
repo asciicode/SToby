@@ -98,7 +98,6 @@ public class RetroApiUserClient extends  AbstractRetroApiClient{
         @Override
         public void run() {
             try {
-                // TODO offline storage
                 userData.postValue(new Result.Loading(true));
 
 //                Thread.sleep(5000);

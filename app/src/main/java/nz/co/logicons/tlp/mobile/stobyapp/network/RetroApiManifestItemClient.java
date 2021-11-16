@@ -194,7 +194,6 @@ public class RetroApiManifestItemClient extends AbstractRetroApiClient {
         @Override
         public void run() {
             try {
-                // TODO offline storage
                 if (isNetworkAvailable) {
                     manifestItems.postValue(new Result.Loading(true));
 

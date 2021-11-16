@@ -1,6 +1,5 @@
 package nz.co.logicons.tlp.mobile.stobyapp;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,19 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import nz.co.logicons.tlp.mobile.stobyapp.ui.adapter.DashboardRecyclerViewAdapter;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.listener.DashboardButtonListener;
 import nz.co.logicons.tlp.mobile.stobyapp.ui.model.DashboardRecyclerModel;
-import nz.co.logicons.tlp.mobile.stobyapp.util.ConnectivityManager;
 import nz.co.logicons.tlp.mobile.stobyapp.util.Constants;
 
 public class MakeMenuFragment extends Fragment implements DashboardButtonListener {
-    @Inject
-    ConnectivityManager connectivityManager;
-    @Inject
-    SharedPreferences sharedPreferences;
     private List<DashboardRecyclerModel> list;
     private DashboardRecyclerViewAdapter adapter;
     private String manifestId;

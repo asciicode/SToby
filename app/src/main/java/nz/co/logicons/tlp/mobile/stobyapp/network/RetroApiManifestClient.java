@@ -69,7 +69,6 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
         public void run() {
 
             try {
-                // TODO offline storage
                 if (isNetworkAvailable) {
                     manifests.postValue(new Result.Loading(true));
 
@@ -126,7 +125,6 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
         public void run() {
 
             try {
-                // TODO offline storage
                 if (isNetworkAvailable) {
                     manifests.postValue(new Result.Loading(true));
 
@@ -184,7 +182,6 @@ public class RetroApiManifestClient extends AbstractRetroApiClient {
         public void run() {
 
             try {
-                // TODO offline storage
                 if (isNetworkAvailable) {
                     manifests.postValue(new Result.Loading(true));
 
