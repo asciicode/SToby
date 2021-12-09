@@ -9,17 +9,27 @@ public class ActionManifestItem {
     private String barcode;
     private String jobId;
     private String jobItemId;
+    private String itemIndex;
 
     public ActionManifestItem()
     {
     }
 
-    public ActionManifestItem(String action, String manifestId, String barcode, String jobId, String jobItemId) {
+    public ActionManifestItem(String action, String manifestId, String barcode, String jobId
+            , String jobItemId, String itemIndex) {
         this.action = action;
         this.manifestId = manifestId;
         this.barcode = barcode;
         this.jobId = jobId;
         this.jobItemId = jobItemId;
+        this.itemIndex = itemIndex;
+    }
+    public String getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(String itemIndex) {
+        this.itemIndex = itemIndex;
     }
 
     public String getBarcode() {

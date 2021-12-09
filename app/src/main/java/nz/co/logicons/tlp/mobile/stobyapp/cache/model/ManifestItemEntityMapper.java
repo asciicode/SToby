@@ -21,7 +21,8 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
                 model.getBarCode(),
                 model.getProductId(),
                 model.getCustomerId(),
-                model.isLoaded()
+                model.isLoaded(),
+                model.getItemIndex()
         );
     }
 
@@ -36,7 +37,8 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
                 manifestItem.getBarCode(),
                 manifestItem.getProductId(),
                 manifestItem.getCustomerId(),
-                manifestItem.isLoaded()
+                manifestItem.isLoaded(),
+                manifestItem.getItemIndex()
         );
     }
 

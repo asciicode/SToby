@@ -29,13 +29,15 @@ public class ManifestItemEntity {
 
     private boolean loaded;
 
+    private String itemIndex;
+
     public String getItemMovementId() {
         return itemMovementId;
     }
 
     public ManifestItemEntity(@NonNull String itemMovementId, String manifestId, String movementId,
             String jobId, String itemId, String barCode,
-            String productId, String customerId, boolean loaded) {
+            String productId, String customerId, boolean loaded, String itemIndex) {
         this.itemMovementId = itemMovementId;
         this.manifestId = manifestId;
         this.movementId = movementId;
@@ -45,6 +47,14 @@ public class ManifestItemEntity {
         this.productId = productId;
         this.customerId = customerId;
         this.loaded = loaded;
+        this.itemIndex = itemIndex;
+    }
+    public String getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(String itemIndex) {
+        this.itemIndex = itemIndex;
     }
 
     public String getManifestId() {

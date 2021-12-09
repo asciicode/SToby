@@ -23,8 +23,10 @@ public class ManifestItemDto {
 
     private boolean loaded;
 
+    private String itemIndex;
+
     public ManifestItemDto(String itemMovementId, String manifestId, String movementId, String jobId, String itemId,
-            String barCode, String productId, String customerId, boolean loaded)
+            String barCode, String productId, String customerId, boolean loaded, String itemIndex)
     {
         super();
         this.itemMovementId = itemMovementId;
@@ -36,10 +38,19 @@ public class ManifestItemDto {
         this.productId = productId;
         this.customerId = customerId;
         this.loaded = loaded;
+        this.itemIndex = itemIndex;
     }
 
     public ManifestItemDto()
     {
+    }
+
+    public String getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(String itemIndex) {
+        this.itemIndex = itemIndex;
     }
 
     public void setManifestId(String manifestId)

@@ -15,7 +15,8 @@ public class ActionManifestItemDtoMapper implements DomainMapper<ActionManifestI
                 model.getManifestId(),
                 model.getBarcode(),
                 model.getJobId(),
-                model.getJobItemId()
+                model.getJobItemId(),
+                model.getItemIndex()
         );
     }
 
@@ -26,7 +27,8 @@ public class ActionManifestItemDtoMapper implements DomainMapper<ActionManifestI
                 actionManifestItem.getManifestId(),
                 actionManifestItem.getBarcode(),
                 actionManifestItem.getJobId(),
-                actionManifestItem.getJobItemId()
+                actionManifestItem.getJobItemId(),
+                actionManifestItem.getItemIndex()
         );
     }
 }

@@ -155,6 +155,9 @@ public class MakeScanFragment extends Fragment {
                 String str = ((Result.Error) makeManifestItemResult).getError() == null ?
                         Constants.SERVER_ERROR : ((Result.Error) makeManifestItemResult).getError().getMessage();
                 Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                // adding delay to scanner decoding
+                Handler handler = new Handler();
+                handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 loading.dismiss();
             }else if (makeManifestItemResult instanceof Result.Success){
                 ActionManifestItem actionManifestItem = (ActionManifestItem)
@@ -162,9 +165,6 @@ public class MakeScanFragment extends Fragment {
                 if (TextUtils.equals(actionManifestItem.getAction(), "ItemAdded")){
                     Toast.makeText(getActivity(), Constants.ITEM_LOADED, Toast.LENGTH_SHORT).show();
                     toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 1000);
-                    // adding delay to scanner decoding
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 }else if (TextUtils.equals(actionManifestItem.getAction(), "ItemRemove")){
                     // delay for loading purpose
                     SystemClock.sleep(1000);
@@ -191,6 +191,9 @@ public class MakeScanFragment extends Fragment {
                             .build();
                     navController.navigate(R.id.action_makeScanFragment_to_mainFragment, bundle, navOptions);
                 }
+                // adding delay to scanner decoding
+                Handler handler = new Handler();
+                handler.postDelayed(() -> mCodeScanner.setScanMode(ScanMode.CONTINUOUS), 1000);
                 loading.dismiss();
             } else if (makeManifestItemResult instanceof Result.Loading) {
                 loading.start();
