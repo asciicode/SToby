@@ -13,6 +13,7 @@ import java.util.List;
 
 import nz.co.logicons.tlp.mobile.stobyapp.AppExecutors;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.ManifestItemDao;
+import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestItemEntity;
 import nz.co.logicons.tlp.mobile.stobyapp.cache.model.ManifestItemEntityMapper;
 import nz.co.logicons.tlp.mobile.stobyapp.data.Result;
 import nz.co.logicons.tlp.mobile.stobyapp.domain.model.ActionManifestItem;
@@ -246,6 +247,17 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
         @Override
         public void run() {
             try {
+                // lazy me validate locally - for Load Manifest
+                if (!actionManifestItem.isStoreLoad()){
+                    List<ManifestItemEntity> manifestItemEntities = manifestItemDao
+                            .getByManifestId(actionManifestItem.getManifestId());
+                    ManifestItemEntity notLoadedEntity = manifestItemEntities.stream()
+                            .filter(rec -> !rec.isLoaded()).findFirst().orElse(null);
+                    if (notLoadedEntity != null){
+                        throw new Exception("Missing item(s).");
+                    }
+                }
+
                 Response response = loadCompleteActionManifestItem(actionManifestItem,
                         user.getUsername(), user.getPassword()).execute();
                 if (response.isSuccessful()) {

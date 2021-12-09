@@ -10,6 +10,7 @@ public class ActionManifestItem {
     private String jobId;
     private String jobItemId;
     private String itemIndex;
+    private boolean storeLoad;
 
     public ActionManifestItem()
     {
@@ -24,6 +25,14 @@ public class ActionManifestItem {
         this.jobItemId = jobItemId;
         this.itemIndex = itemIndex;
     }
+    public boolean isStoreLoad() {
+        return storeLoad;
+    }
+
+    public void setStoreLoad(boolean storeLoad) {
+        this.storeLoad = storeLoad;
+    }
+
     public String getItemIndex() {
         return itemIndex;
     }

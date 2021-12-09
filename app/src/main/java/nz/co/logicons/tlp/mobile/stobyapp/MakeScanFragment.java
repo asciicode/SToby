@@ -141,6 +141,7 @@ public class MakeScanFragment extends Fragment {
             temp -> {
                 ActionManifestItem actionManifestItem = new ActionManifestItem();
                 actionManifestItem.setManifestId(manifestId);
+                actionManifestItem.setStoreLoad(true);
                 makeManifestItemViewModel.getRetroMakeApiManifestItemClient()
                         .loadCompleteActionManifestItem(actionManifestItem, user);
             }
