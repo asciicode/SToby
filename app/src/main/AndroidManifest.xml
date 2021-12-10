@@ -44,10 +44,10 @@
         <activity
             android:name=".LoginSettingActivity"
             android:label="Login Settings"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"/>
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
