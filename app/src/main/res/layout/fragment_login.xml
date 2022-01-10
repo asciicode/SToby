@@ -53,8 +53,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:background="@drawable/border"
-        android:singleLine="true"
-        android:text="admin"/>
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/lblLoginPassword"
@@ -69,8 +68,7 @@
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@drawable/border"
-        android:text="password"/>
+        android:background="@drawable/border"/>
 
     <Button
         android:id="@+id/btnLoginMain"

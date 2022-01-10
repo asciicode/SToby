@@ -26,15 +26,10 @@ public class ManifestItemListRecyclerViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         this.tvManifestId = itemView.findViewById(R.id.tvManifestId);
         this.tvJobId = itemView.findViewById(R.id.tvJobId);
-        this.tvProductId = itemView.findViewById(R.id.tvProductId);
-        this.tvCustomerId = itemView.findViewById(R.id.tvCustomerId);
-        this.tvLoaded = itemView.findViewById(R.id.tvLoaded);
-//        this.txtViewInwardProduct = itemView.findViewById(R.id.txtview_inwardproduct_value);
-//        this.txtViewInwardQuantity = itemView.findViewById(R.id.txtview_inwardquantity_value);
-//        this.layoutRecyclerInwards = itemView.findViewById(R.id.layout_recycler_inwards_border);
-        this.imageView = itemView.findViewById(R.id.imageIndicator);
-//        this.cbLoaded = itemView.findViewById(R.id.cbLoaded);
-//        cbLoaded.setEnabled(false);
+//        this.tvProductId = itemView.findViewById(R.id.tvProductId);
+//        this.tvCustomerId = itemView.findViewById(R.id.tvCustomerId);
+//        this.tvLoaded = itemView.findViewById(R.id.tvLoaded);
+//        this.imageView = itemView.findViewById(R.id.imageIndicator);
     }
 
 }

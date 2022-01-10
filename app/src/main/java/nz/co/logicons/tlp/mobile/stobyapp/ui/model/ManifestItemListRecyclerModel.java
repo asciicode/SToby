@@ -21,6 +21,8 @@ public class ManifestItemListRecyclerModel {
 
     private boolean loaded;
 
+    private int quantity;
+
     public String getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class ManifestItemListRecyclerModel {
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

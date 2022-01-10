@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,9 +77,13 @@ public class LoginFragment extends Fragment {
         usernameEditText = view.findViewById(R.id.txtLoginUsername);
         passwordEditText = view.findViewById(R.id.txtLoginPassword);
 
+        String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
+        usernameEditText.setText(TextUtils.isEmpty(username) ? "admin" : username);
+        String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
+        passwordEditText.setText(TextUtils.isEmpty(password) ? "password" : password);
+
         setupSettingsButton(view);
         setupLoginButton(view);
-
         accessViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(AccessViewModel.class);
         accessViewModel.getRetroApiUserClient().getUserData().observe(getViewLifecycleOwner(), new Observer<Result<User>>() {
             @Override

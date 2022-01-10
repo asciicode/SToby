@@ -22,7 +22,8 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
                 model.getProductId(),
                 model.getCustomerId(),
                 model.isLoaded(),
-                model.getItemIndex()
+                model.getItemIndex(),
+                model.getQuantity()
         );
     }
 
@@ -38,7 +39,8 @@ public class ManifestItemEntityMapper implements DomainMapper<ManifestItemEntity
                 manifestItem.getProductId(),
                 manifestItem.getCustomerId(),
                 manifestItem.isLoaded(),
-                manifestItem.getItemIndex()
+                manifestItem.getItemIndex(),
+                manifestItem.getQuantity()
         );
     }
 

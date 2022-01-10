@@ -16,7 +16,7 @@ import nz.co.logicons.tlp.mobile.stobyapp.cache.model.UserEntity;
 @Database(entities = {
         UserEntity.class,
         ManifestEntity.class,
-        ManifestItemEntity.class}, version = 6, exportSchema = false)
+        ManifestItemEntity.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "stoby_db";
 

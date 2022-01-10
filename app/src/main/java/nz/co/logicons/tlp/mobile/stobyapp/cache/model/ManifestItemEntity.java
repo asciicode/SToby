@@ -31,13 +31,16 @@ public class ManifestItemEntity {
 
     private String itemIndex;
 
+    private int quantity;
+
     public String getItemMovementId() {
         return itemMovementId;
     }
 
     public ManifestItemEntity(@NonNull String itemMovementId, String manifestId, String movementId,
             String jobId, String itemId, String barCode,
-            String productId, String customerId, boolean loaded, String itemIndex) {
+            String productId, String customerId, boolean loaded, String itemIndex,
+            int quantity) {
         this.itemMovementId = itemMovementId;
         this.manifestId = manifestId;
         this.movementId = movementId;
@@ -48,6 +51,7 @@ public class ManifestItemEntity {
         this.customerId = customerId;
         this.loaded = loaded;
         this.itemIndex = itemIndex;
+        this.quantity = quantity;
     }
     public String getItemIndex() {
         return itemIndex;
@@ -122,6 +126,14 @@ public class ManifestItemEntity {
         this.loaded = loaded;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "ManifestItemEntity{" +
@@ -134,6 +146,8 @@ public class ManifestItemEntity {
                 ", productId='" + productId + '\'' +
                 ", customerId='" + customerId + '\'' +
                 ", loaded=" + loaded +
+                ", itemIndex='" + itemIndex + '\'' +
+                ", quantity=" + quantity +
                 '}';
     }
 }

@@ -25,6 +25,8 @@ public class ManifestItem {
 
     private String itemIndex;
 
+    private int quantity;
+
     public String getManifestId() {
         return manifestId;
     }
@@ -61,7 +63,8 @@ public class ManifestItem {
     }
 
     public ManifestItem(String itemMovementId, String manifestId, String movementId, String jobId, String itemId,
-            String barCode, String productId, String customerId, boolean loaded, String itemIndex) {
+            String barCode, String productId, String customerId, boolean loaded, String itemIndex,
+            int quantity) {
         super();
         this.itemMovementId = itemMovementId;
         this.manifestId = manifestId;
@@ -73,6 +76,7 @@ public class ManifestItem {
         this.customerId = customerId;
         this.loaded = loaded;
         this.itemIndex = itemIndex;
+        this.quantity  = quantity;
     }
     public String getItemIndex() {
         return itemIndex;
@@ -129,4 +133,11 @@ public class ManifestItem {
     }
 
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -25,8 +25,10 @@ public class ManifestItemDto {
 
     private String itemIndex;
 
+    private int quantity;
     public ManifestItemDto(String itemMovementId, String manifestId, String movementId, String jobId, String itemId,
-            String barCode, String productId, String customerId, boolean loaded, String itemIndex)
+            String barCode, String productId, String customerId, boolean loaded, String itemIndex
+            , int quantity)
     {
         super();
         this.itemMovementId = itemMovementId;
@@ -39,6 +41,7 @@ public class ManifestItemDto {
         this.customerId = customerId;
         this.loaded = loaded;
         this.itemIndex = itemIndex;
+        this.quantity = quantity;
     }
 
     public ManifestItemDto()
@@ -143,13 +146,28 @@ public class ManifestItemDto {
         this.itemMovementId = itemMovementId;
     }
 
-    @Override
-    public String toString()
-    {
-        return "ManifestItemDto [itemMovementId=" + itemMovementId + ", manifestId=" + manifestId + ", movementId="
-                + movementId + ", jobId=" + jobId + ", itemId=" + itemId + ", barCode=" + barCode + ", productId=" + productId
-                + ", customerId=" + customerId + ", loaded=" + loaded + "]";
+    public int getQuantity() {
+        return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
+    @Override
+    public String toString() {
+        return "ManifestItemDto{" +
+                "itemMovementId='" + itemMovementId + '\'' +
+                ", manifestId='" + manifestId + '\'' +
+                ", movementId='" + movementId + '\'' +
+                ", jobId='" + jobId + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", barCode='" + barCode + '\'' +
+                ", productId='" + productId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", loaded=" + loaded +
+                ", itemIndex='" + itemIndex + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

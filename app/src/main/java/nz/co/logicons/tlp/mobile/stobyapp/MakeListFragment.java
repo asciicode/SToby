@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,7 @@ public class MakeListFragment extends Fragment {
                             recyclerModel.setLoaded(res.isLoaded());
                             recyclerModel.setJobId(res.getJobId());
 //                            recyclerModel.setDriver(res.getDriver());
+                            recyclerModel.setQuantity(res.getQuantity());
                             list.add(recyclerModel);
                         }
                         updateControls();
@@ -142,5 +144,8 @@ public class MakeListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout_fragment_child);
+        swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
     }
 }
