@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class AvailableDashboardFragment extends Fragment implements ManifestList
         recyclerView = view.findViewById(R.id.recyclerview_fragment_child);
         txtViewFragmentInwardsCount = view.findViewById(R.id.tvRecordCount);
         initializeRecycler(view);
+        manifestViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(ManifestViewModel.class);
         getAvailableManifest();
 
         // should be here after invoking web service
@@ -95,12 +97,10 @@ public class AvailableDashboardFragment extends Fragment implements ManifestList
     }
 
     private void getAvailableManifest() {
-        String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
-        String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
-        User user = new User(username, password);
-
-        manifestViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner()).get(ManifestViewModel.class);
         if (connectivityManager.isNetworkAvailable){
+            String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
+            String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
+            User user = new User(username, password);
             Manifest manifest = new Manifest();
             manifestViewModel.getRetroApiManifestClient().availableManifest(
                     connectivityManager.isNetworkAvailable, manifest, user);
@@ -154,6 +154,12 @@ public class AvailableDashboardFragment extends Fragment implements ManifestList
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout_fragment_child);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getAvailableManifest();
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     @Override

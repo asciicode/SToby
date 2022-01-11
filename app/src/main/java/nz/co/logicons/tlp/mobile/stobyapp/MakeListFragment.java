@@ -67,7 +67,13 @@ public class MakeListFragment extends Fragment {
 
         makeManifestItemViewModel = new ViewModelProvider((ViewModelStoreOwner) getViewLifecycleOwner())
                 .get(MakeManifestItemViewModel.class);
+        fetchAllocatedManifestItems();
 
+        // should be here after invoking web service
+        observeAnyChange();
+    }
+
+    private void fetchAllocatedManifestItems() {
         if (connectivityManager.isNetworkAvailable) {
             String username = sharedPreferences.getString(PreferenceKeys.USERNAME, "").toString();
             String password = sharedPreferences.getString(PreferenceKeys.PASSWORD, "").toString();
@@ -78,9 +84,6 @@ public class MakeListFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), NO_INET_CONNECTION, Toast.LENGTH_SHORT).show();
         }
-
-        // should be here after invoking web service
-        observeAnyChange();
     }
 
     private void observeAnyChange() {
@@ -146,6 +149,9 @@ public class MakeListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout_fragment_child);
-        swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchAllocatedManifestItems();
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 }

@@ -254,7 +254,7 @@ public class RetroApiMakeManifestItemClient extends AbstractRetroApiClient {
                     ManifestItemEntity notLoadedEntity = manifestItemEntities.stream()
                             .filter(rec -> !rec.isLoaded()).findFirst().orElse(null);
                     if (notLoadedEntity != null){
-                        throw new Exception("Missing item(s).");
+                        throw new Exception("Missing item(s)");
                     }
                 }
 
