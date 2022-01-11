@@ -39,15 +39,15 @@ public class ManifestItemListRecyclerViewAdapter extends RecyclerView.Adapter<Ma
     @Override
     public void onBindViewHolder(@NonNull ManifestItemListRecyclerViewHolder holder, int position) {
         ManifestItemListRecyclerModel manifestItemListRecyclerModel = list.get(position);
-        String tmp = String.format("Job - %s, Customer - %s, Product - %s, Quantity - %s, Loaded - %s"
+        String tmp = String.format("Job - %s, Customer - %s, Product - %s, Quantity - %s"
                 , manifestItemListRecyclerModel.getJobId(), manifestItemListRecyclerModel.getCustomerId()
-                , manifestItemListRecyclerModel.getProductId(), manifestItemListRecyclerModel.getQuantity()
-                , manifestItemListRecyclerModel.isLoaded());
+                , manifestItemListRecyclerModel.getProductId(), manifestItemListRecyclerModel.getQuantity());
         holder.tvJobId.setText(tmp);
+        holder.cbLoaded.setChecked(manifestItemListRecyclerModel.isLoaded());
 //        holder.tvProductId.setText(manifestItemListRecyclerModel.getProductId());
 //        holder.tvCustomerId.setText(manifestItemListRecyclerModel.getCustomerId());
 //        holder.tvLoaded.setText("" + manifestItemListRecyclerModel.isLoaded());
-//        holder.cbLoaded.setChecked(manifestItemListRecyclerModel.isLoaded());
+
     }
 
     private void updateImageView(ViewGroup parent, ImageView imageView, int id) {

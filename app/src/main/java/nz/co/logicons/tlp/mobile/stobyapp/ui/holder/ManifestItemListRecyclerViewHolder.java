@@ -26,6 +26,7 @@ public class ManifestItemListRecyclerViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         this.tvManifestId = itemView.findViewById(R.id.tvManifestId);
         this.tvJobId = itemView.findViewById(R.id.tvJobId);
+        this.cbLoaded = itemView.findViewById(R.id.cbLoaded);
 //        this.tvProductId = itemView.findViewById(R.id.tvProductId);
 //        this.tvCustomerId = itemView.findViewById(R.id.tvCustomerId);
 //        this.tvLoaded = itemView.findViewById(R.id.tvLoaded);

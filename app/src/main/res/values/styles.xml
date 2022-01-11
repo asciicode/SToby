@@ -4,6 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:itemBackground">@color/colorPrimary</item>
         <item name="android:actionMenuTextColor">@color/colorSecondary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>   <!-- normal border color change as you wish -->
+        <item name="colorControlActivated">@color/colorSecondary</item> <!-- activated color change as you wish -->
     </style>
 
     <style name="DarkerTheme" parent="AppTheme">
